@@ -1,0 +1,23 @@
+BEGIN TRANSACTION;
+
+CREATE TABLE IF NOT EXISTS "beitrag" (
+	"ID"	INTEGER NOT NULL UNIQUE,
+	"title"	VARCHAR(255) NOT NULL,
+	"content"	TEXT NOT NULL,
+	"short_description"	VARCHAR(255) NOT NULL,
+	"tags"	VARCHAR(255) NOT NULL,
+	"department"	VARCHAR(255) NOT NULL,
+	"category"	VARCHAR(255) NOT NULL,
+	"controll_date"	DATE NOT NULL,
+	"publishing_date"	DATE,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
+
+CREATE TABLE IF NOT EXISTS "kategorie" (
+	"ID"	INTEGER NOT NULL UNIQUE,
+	"name"	VARCHAR(255) NOT NULL,
+	"main_category"	INTEGER,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
+
+COMMIT;
