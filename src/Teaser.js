@@ -1,26 +1,27 @@
-
 function Teaser({ teaser }) {
   return (
     <div className="teaser" teaser={teaser} key={teaser.id}>
       <h4>
-        <a>{teaser.title}</a>
+        <a href={`/beitrag/${(teaser.id)}`}>{teaser.title}</a>
       </h4>
-      <p>{teaser.short_description}</p>
+      <p>{teaser.kurzbeschreibung}</p>
       <ul className="taglist">
-        <li>{teaser.taglist}</li>
+        <li>{teaser.tags}</li>
       </ul>
-      <button className="open">Öffnen</button>
     </div>
   );
 }
 
-function TeaserList({ teasers, heading }) {
+function TeaserList({ beitraege, heading }) {
+  if (!beitraege) {
+    return
+  }
   return (
     <div className="container">
       <h3>{heading}</h3>
       <div className="beitrag_list">
-        {teasers.map((teaser) => (
-          <Teaser key={teaser.id} teaser={teaser} />
+        {beitraege.map((beitrag) => (
+          <Teaser key={beitrag.id} teaser={beitrag} />
         ))}
       </div>
     </div>

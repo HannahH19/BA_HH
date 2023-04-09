@@ -6,7 +6,7 @@ function Menu() {
             <a href="suche_design_mockup.html">Suche</a>
             <a href="abteilung.html">Abteilungen</a>
             <a href="login.html">Abmelden</a>
-            <a href="form.html">Neuer Beitrag</a>
+            <a href="/beitrag_neu">Neuer Beitrag</a>
         </nav>
         <section className="top-nav">
             <input id="menu-toggle" type="checkbox" />
