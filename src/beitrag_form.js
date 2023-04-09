@@ -171,9 +171,9 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         placeholder="Mit welchen Schlagworten lässt sich das Thema des Beitrags beschreiben?"
                         value={tags}
                         onChange={ev => setTags(ev.target.value)} />
-                    <button>Hinzufügen</button>
+                    <button onClick={() => add_tag(tags,ev.target.value)}>Hinzufügen</button>
                     <p class="hinweis_form">Unter den gewählten Schlagworten kann der Beitrag später gefunden werden.</p>
-                    <tag_list></tag_list>
+                   <Tag_list tag_list={tags}></Tag_list>
                 </div>
                 <div id="abteilung">
                     <h3 className="form_label">Abteilung</h3>
@@ -226,40 +226,47 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         onChange={ev => setAuthor(ev.target.value)}
                     />
                 </div>
+
+
+                <div className="edit">
+                    <button className="open" onClick={() => updateBeitrag(
+                        beitrag.id,
+                        title,
+                        text,
+                        kurzbeschreibung,
+                        tags,
+                        abteilung,
+                        sichtbarkeit,
+                        author,
+                        kontrolldatum,
+                        veroeffentlichungsdatum)}>Änderungen speichern</button>
+                    <button class="delete" onClick={() => deleteBeitrag(beitrag.id)}>Löschen</button>
+                </div>
+
+                <div className="add">
+                    <button
+                        className="open"
+                        onClick={addBeitrag}>
+                        Beitrag neuerstellen
+                    </button>
+                </div>
             </div>
-
-
-            <div className="edit">
-                <button className="open" onClick={() => updateBeitrag(
-                    beitrag.id,
-                    title,
-                    text,
-                    kurzbeschreibung,
-                    tags,
-                    abteilung,
-                    sichtbarkeit,
-                    author,
-                    kontrolldatum,
-                    veroeffentlichungsdatum)}>Änderungen speichern</button>
-                <button class="delete" onClick={() => deleteBeitrag(beitrag.id)}>Löschen</button>
-            </div>
-
-            <div className="add">
-                <button
-                    className="open"
-                    onClick={addBeitrag}>
-                    Beitrag neuerstellen
-                </button>
-            </div>
-
         </main >
     )
 }
 
-
+function add_tag({tag_list, tag}){
+    const tags = tag_list + ',' + tag;
+    return tags;
+}
 function Tag_list({ tag_list }) {
+    const tag_array = tag_list.split(',');
     return (
-        <ul></ul>
+        <ul className="tag_list">
+            {tag_array.map((tag) => (
+                <i>{tag}</i>
+            ))}
+        </ul>
     )
 }
 
@@ -291,12 +298,12 @@ function check_length(max_length, target) {
 function check_controll_date() {
     const date = new Date();
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth()+1).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
 
-    const date_today = String(year) +'-'+ String(month) +'-'+ String(day);
-    const date_one_year = String(year+1) +'-'+ String(month) +'-'+ String(day);
-   
+    const date_today = String(year) + '-' + String(month) + '-' + String(day);
+    const date_one_year = String(year + 1) + '-' + String(month) + '-' + String(day);
+
     return [date_today, date_one_year];
 
 }

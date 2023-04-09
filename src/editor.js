@@ -25,7 +25,6 @@ export default function Beitragpage_edit() {
         }
     );
 
-
     console.log(beitrag)
     if (!beitrag) {
         return
