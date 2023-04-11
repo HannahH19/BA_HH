@@ -560,15 +560,26 @@ img {
 }
 
 input.pflicht,
-textarea.pflicht{
+textarea.pflicht {
     border: 2px solid #cd0000;
     color: darkred;
 }
 
-.edit .add{
+.edit .add {
     display: none;
 }
 
-.add .edit{
+.add .edit {
     display: none;
+}
+
+.delete_tag {
+    float: right;
+}
+
+.tag_list_editor{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }

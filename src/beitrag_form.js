@@ -4,7 +4,7 @@ import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import abteilunglist from "./Abteilung";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Beitrag_form({ beitrag = {}, action }) {
     const [title, setTitle] = useState(beitrag.title);
@@ -16,9 +16,11 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     const [author, setAuthor] = useState(beitrag.author);
     const [kontrolldatum, setKontrolldatum] = useState(beitrag.kontrolldatum);
     const [veroeffentlichungsdatum, setVeroeffentlichungsdatum] = useState(beitrag.veroeffentlichungsdatum);
-
-
     const date_array = check_controll_date();
+    const [tag, setTag] = useState('');
+    const [sichtbarkeit_option, setSichtbarkeitOption] = useState('');
+    const navigate = useNavigate();
+
     async function addBeitrag() {
         if (!title || !text || !kurzbeschreibung || !tags || !abteilung || !sichtbarkeit || !author || !kontrolldatum || !veroeffentlichungsdatum) {
             alert('Bitte füllen Sie alle Felder aus');
@@ -39,7 +41,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 veroeffentlichungsdatum
             });
             console.log(id);
-            window.open(`/`);
+            navigate(`/`);
         } catch (error) {
 
         }
@@ -82,7 +84,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 veroeffentlichungsdatum: veroeffentlichungsdatum
             });
             console.log(result);
-            window.open(`/`);
+            navigate(`/`);
         } catch (error) {
 
         }
@@ -111,6 +113,88 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         } catch (error) {
 
         }
+    }
+
+    function addTag(tag_list, tag) {
+        let tag_correct = true;
+        let tag_array = [];
+        if (!tag) {
+            toast.warn('Bitte geben Sie ein Schlagwort ein');
+            return tag_list
+        }
+        if (tag_list) {
+            tag_array = tag_list;
+            tag_list?.forEach(element => {
+                if (element == tag) {
+                    toast.warn('Das Schlagwort ' + tag + ' existiert bereits, bitte geben Sie ein anderes Wort ein');
+                    tag_correct = false;
+                }
+            });
+            if (tag_correct) {
+                console.log()
+                tag_array.push(tag);
+
+            }
+        } else {
+            tag_array[0] = (tag);
+        }
+        setTag('')
+        return tag_array;
+    }
+
+    function deleteTag(tag_list, tag_index) {
+        tag_list.splice(tag_index, 1);
+
+        return tag_list;
+    }
+
+    //Abteilung zur Sichtbarkeitsliste hinzufügen
+    //Vorher: Prüfung, ob Wert übergeben oder Wert bereits in Liste vorhanden
+    function add_abteilung_sichtbar(sichtbarkeit_list, sichtbarkeit) {
+        console.log({ sichtbarkeit })
+        console.log({ sichtbarkeit_list })
+        let option_correct = true;
+        let sichtbarkeit_array = [];
+        if (!sichtbarkeit) {
+            toast.warn('Bitte wählen Sie eine Abteilung aus');
+            return sichtbarkeit_list
+        }
+       
+
+        //Entweder Abteilungsübergreifend freigeben oder für bestimmte Abteilungen, nicht beides parralel
+        if(sichtbarkeit === 'Abteilungsübergreifend'){
+            sichtbarkeit_array = [sichtbarkeit]
+            return sichtbarkeit_array;
+        } else {
+            sichtbarkeit_list = sichtbarkeit_list?.filter(el => el !== 'Abteilungsübergreifend');
+        }
+
+        if (sichtbarkeit_list) {
+            sichtbarkeit_array = sichtbarkeit_list;
+            sichtbarkeit_list?.forEach(element => {
+                if (element == sichtbarkeit) {
+                    toast.warn('Die Abteilung ' + sichtbarkeit + ' wurde bereits zur Liste der Abteilungen mit Zugang zu diesem Beitrag hinzugefügt');
+                    option_correct = false;
+                }
+            });
+            if (option_correct) {
+                console.log()
+                sichtbarkeit_array.push(sichtbarkeit);
+
+            }
+        } else {
+            sichtbarkeit_array[0] = (sichtbarkeit);
+        }
+        setSichtbarkeitOption('');
+        document.querySelector('#empty').selected = true;
+        return sichtbarkeit_array;
+    }
+
+    //Abteilung aus Sichtbarkeitsliste löschen und Element ausblenden
+    function delete_abteilung_sichtbar(sichtbarkeit_list, index) {
+        sichtbarkeit_list.splice(index, 1);
+        document.getElementById('sichtbarkeit_' + index).style.display = 'none';
+        return sichtbarkeit_list;
     }
 
     return (
@@ -167,13 +251,21 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 <div id="schlagworte">
                     <h3 className="form_label">Schlagworte</h3>
                     <input
-                        type="text"
                         placeholder="Mit welchen Schlagworten lässt sich das Thema des Beitrags beschreiben?"
-                        value={tags}
-                        onChange={ev => setTags(ev.target.value)} />
-                    <button onClick={() => add_tag(tags,ev.target.value)}>Hinzufügen</button>
+                        value={tag}
+                        onChange={ev => { setTag(ev.target.value); console.log(tags) }}
+                        onKeyDown={ev => { if (ev.key === 'Enter') { setTags(addTag(tags, tag)) } }}
+                    />
+                    <button onClick={() => setTags(addTag(tags, tag))}>Hinzufügen</button>
                     <p class="hinweis_form">Unter den gewählten Schlagworten kann der Beitrag später gefunden werden.</p>
-                   <Tag_list tag_list={tags}></Tag_list>
+                    <ul className="tag_list_editor">
+                        {tags?.map((tag, index) => (
+                            <li>
+                                {tag}
+                                <button onClick={() => setTags(deleteTag(tags, index))} className="delete_tag">Schlagwort löschen</button>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                 <div id="abteilung">
                     <h3 className="form_label">Abteilung</h3>
@@ -182,20 +274,28 @@ export default function Beitrag_form({ beitrag = {}, action }) {
 
                         value={abteilung}>
                         {abteilunglist().map((abteilung) => (
-                            <option id={abteilung.id}>{abteilung.key}</option>
+                            <option id={'abteilung_' + abteilung.id}>{abteilung.key}</option>
                         ))}
                     </select>
                     <p class="hinweis_form">Unter dieser Abteilung wird ihr Beitrag später zu finden sein.</p>
                 </div>
                 <div id="sichtbarkeit">
                     <h3 className="form_label">Sichtbarkeit</h3>
-                    <select
-                        onChange={ev => setSichtbarkeit(ev.target.value)}
-                        value={sichtbarkeit}>
+                    <select onChange={ev => { setSichtbarkeitOption(ev.target.value); console.log(sichtbarkeit_option) }}>
+                        <option id="empty"></option>
                         {abteilunglist().map((abteilung) => (
-                            <option id={abteilung.id}>{abteilung.key}</option>
+                            <option>{abteilung.key}</option>
                         ))}
                     </select>
+                    <button onClick={() => setSichtbarkeit(add_abteilung_sichtbar(sichtbarkeit, sichtbarkeit_option))}>Hinzufügen</button>
+                    <ul className="tag_list_editor">
+                        {sichtbarkeit?.map((abteilung, index) => (
+                            <li id={'sichtbarkeit_' +index}>
+                                {abteilung}
+                                <button onClick={() => setSichtbarkeit(delete_abteilung_sichtbar(sichtbarkeit, index))} className="delete_tag">Abteilung löschen</button>
+                            </li>
+                        ))}
+                    </ul>
                     <p class="hinweis_form">Legen Sie fest, welche Abteilungen diesen Beitrag sehen können.</p>
                 </div>
                 <div id="pruefungsdatum">
@@ -213,7 +313,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <input
                         type="date"
                         min={date_array[0]}
-                        max={date_array[1]}
+                        max={kontrolldatum}
                         value={veroeffentlichungsdatum}
                         onChange={ev => setVeroeffentlichungsdatum(ev.target.value)}></input>
                     <p class="hinweis_form">Wählen Sie das Datum, an dem der Beitrag veröffentlicht werden soll.</p>
@@ -255,21 +355,9 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     )
 }
 
-function add_tag({tag_list, tag}){
-    const tags = tag_list + ',' + tag;
-    return tags;
-}
-function Tag_list({ tag_list }) {
-    const tag_array = tag_list.split(',');
-    return (
-        <ul className="tag_list">
-            {tag_array.map((tag) => (
-                <i>{tag}</i>
-            ))}
-        </ul>
-    )
-}
-
+/*
+Funktion prüft, ob Zielobjekt maximale Länge überschreitet
+*/
 function check_length(max_length, target) {
     if (!target.value) {
         return

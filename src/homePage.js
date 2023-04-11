@@ -1,5 +1,5 @@
 import Top from "./top";
-import TeaserList from "./Teaser";
+import TeaserList from "./teaser";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
 function Startpage() {
