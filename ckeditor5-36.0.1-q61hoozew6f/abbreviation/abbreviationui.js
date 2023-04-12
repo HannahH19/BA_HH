@@ -22,7 +22,7 @@ export default class AbbreviationUI extends Plugin {
 
 		editor.ui.componentFactory.add('abbreviation', () => {
 			//	const button = new ButtonView();
-			const button = new DropdownButtonView();
+			const button = new ButtonView();
 			button.label = 'Abbreviation';
 			button.tooltip = true;
 			button.withText = true;

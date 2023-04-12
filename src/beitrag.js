@@ -22,7 +22,6 @@ export default function Beitragpage() {
         }
     );
 
-
     if (!beitrag) {
         return
     }
@@ -33,11 +32,19 @@ export default function Beitragpage() {
     }
 
 
+
     var text = beitrag_id.text;
 
+
     text = mark_down_text(text);
+    text = text.replaceAll('</p>')
+    const text_132 = text.split('<p>');
+
+    console.log(text_132)
 
 
+    text = text.split("section");
+    console.log(text)
     return (
         <main>
             <div className="beitrag">
@@ -45,15 +52,45 @@ export default function Beitragpage() {
                 <button className="download"><a href="javascript:history.back()">Zurück</a></button>
                 <button><a href={`/beitrag/${(beitrag_id.id)}/edit`}>Bearbeiten</a></button>
                 <h1 className="title">{beitrag_id.title}</h1>
-                <div className="content">
-                    {beitrag_id.text} 
-                
-                    <ReactMarkdown children={text}></ReactMarkdown>
-
+                <div className="content" >
+                    {/* {beitrag_id.text} */}
+                    {/* <ReactMarkdown>{text.toString()}</ReactMarkdown> 
+                    <EingebundenerBeitrag id={1}></EingebundenerBeitrag> */}
+                    {text_132.map((text) => (
+                        () => {
+                            if (text !== '123') {
+                                return <p>'</p>
+                            }
+                            return null
+                        }
+                    ))}
                 </div>
             </div>
         </main>
     )
+}
+
+function EingebundenerBeitrag({ id }) {
+    const beitrag = useLiveQuery(
+        async () => {
+            const beitrag = await db.beitrag
+                .where({ id: parseInt(id) })
+                .toArray();
+            return beitrag;
+        }
+    );
+
+    if (!beitrag) { return }
+    const beitrag_id = beitrag[0];
+
+    return (
+        <div className="eingebundenerBeitrag">
+            <h2>EingebundenerBeitrag Test</h2>
+            <h2>{beitrag_id.name}</h2>
+            <p>{beitrag_id.text}</p>
+        </div>
+    )
+
 }
 
 function mark_down_text(text) {
@@ -64,8 +101,8 @@ function mark_down_text(text) {
 
     //filter text
     //
-    text = text.replaceAll('<p>', '\n');
-    text = text.replaceAll('</p>', '\n');
+    // text = text.replaceAll('<p>', '\n');
+    // text = text.replaceAll('</p>', '\n');
 
     //filter Überschrift1 
     //#
@@ -89,7 +126,7 @@ function mark_down_text(text) {
     // text = text.replaceAll('<img', '![alt_text]');
     // text = text.replaceAll('src="', '(');
     // text = text.replaceAll('">', ')');
-    
+
     //dick
     //**Text**
     text = text.replaceAll('<strong>', ' **');
@@ -125,10 +162,10 @@ function mark_down_text(text) {
 
     //Link <a>
     //[link]()
-    text = text.replaceAll('<a', '[link]');
-    text = text.replaceAll('href="', '(/')
-    text = text.replaceAll('">', ')');
-    text = text.replaceAll('</a>', '\n');
+    // text = text.replaceAll('<a', '[link]');
+    // text = text.replaceAll('href="', '(/')
+    // text = text.replaceAll('">', ')');
+    // text = text.replaceAll('</a>', '\n');
 
     return text;
 }

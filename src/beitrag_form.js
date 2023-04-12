@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { db } from "./db";
-import Editor from 'ckeditor5-custom-build/build/ckeditor';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import abteilunglist from "./Abteilung";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import BeitragPreview from "./beitragPreview";
+import { useLiveQuery } from "dexie-react-hooks";
+import BeitragList from "./beitragList";
+import { useRef } from "react";
+import { createRoot } from "react-dom/client";
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 export default function Beitrag_form({ beitrag = {}, action }) {
     const [title, setTitle] = useState(beitrag.title);
@@ -20,6 +25,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     const [tag, setTag] = useState('');
     const [sichtbarkeit_option, setSichtbarkeitOption] = useState('');
     const navigate = useNavigate();
+    const beitrag_list = useLiveQuery(() => db.beitrag.toArray());
 
     async function addBeitrag() {
         if (!title || !text || !kurzbeschreibung || !tags || !abteilung || !sichtbarkeit || !author || !kontrolldatum || !veroeffentlichungsdatum) {
@@ -113,7 +119,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
 
         }
     }
-
+  
     function addTag(tag_list, tag) {
         let tag_correct = true;
         let tag_array = [];
@@ -196,10 +202,14 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         return sichtbarkeit_list;
     }
 
+    let ckeditor = useRef(null);
+    let beitrag_list_view = useRef(null);
+    beitrag_list_view.current = beitrag_list;
+
     return (
         <main className={action}>
 
-             <div className="beitrag">
+            <div className="beitrag">
                 <h2>Beitrag</h2>
                 <div id="title">
                     <h3 class="form_label">Titel</h3>
@@ -216,10 +226,23 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <CKEditor
                         editor={Editor}
                         data={text}
+                        config={{
+                            products: {
+                                productRenderer: (id, domElement) => {
+                                    const root = createRoot(domElement);
+                                    const product = beitrag_list_view.current?.find(product => product.id === id)
+                                    root.render(
+                                        <div class="beitrag_einbinden">
+                                            <h2 className="linked_beitrag">{product?.title}</h2>
+                                        </div>
+                                        // <BeitragPreview id={id} {...product}></BeitragPreview>
+                                    )
+                                }
+                            }
+                        }}
                         onReady={editor => {
-                            // You can store the "editor" and use when it is needed.
                             console.log('Editor is ready to use!', editor);
-                            //this.editor = editor;
+                            ckeditor.current = editor;
                         }}
                         onChange={(event, editor) => {
                             const data = editor.getData();
@@ -233,6 +256,15 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                             console.log('Focus.', editor);
                         }}
                     />
+                    <BeitragList
+                        key="beitrag-list"
+                        products={beitrag_list}
+                        onClick={(id) => {
+                            console.log(ckeditor)
+                            ckeditor.current.execute('insertProduct', id)
+                        }}></BeitragList>
+
+
 
                 </div>
             </div>
@@ -325,7 +357,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         value={author}
                         onChange={ev => setAuthor(ev.target.value)}
                     />
-                </div> 
+                </div>
 
 
                 <div className="edit">

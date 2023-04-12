@@ -1,16 +1,23 @@
-import BeitragPreview from "./beitragPreview";
+// react/productlist.js
 
-export default function Beitrag_list({beitrag_list}) {
-    return (
-        <div className="app__beitrag-list">
-            <h3>Beiträge</h3>
+import React from 'react';
+import BeitragPreview from './beitragPreview';
+export default class BeitragList extends React.Component {
+    render() {
+        return <div className="beitrag_list">
+            <h3>Products</h3>
             <ul>
-                {beitrag_list.map( beitrag => {
-                    return <li key={beitrag.id}>
-                        <BeitragPreview key={beitrag.id} beitrag={beitrag} ></BeitragPreview>
+                {this.props.products?.map( product => {
+                    return <li key={product.id}>
+                        <BeitragPreview
+                            id={product.id}
+                            onClick={this.props.onClick}
+                            {...product}
+                        />
                     </li>;
                 })}
             </ul>
-        </div>
-    )
+            <p><b>Tip</b>: Clicking the product will add it to the editor.</p>
+        </div>;
+    }
 }
