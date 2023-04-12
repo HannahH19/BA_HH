@@ -35,7 +35,7 @@ export default function Beitragpage() {
 
     var text = beitrag_id.text;
 
-    //text = mark_down_text(text);
+    text = mark_down_text(text);
 
 
     return (

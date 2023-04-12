@@ -6,7 +6,9 @@ function Teaser({ teaser }) {
       </h4>
       <p>{teaser.kurzbeschreibung}</p>
       <ul className="taglist">
-        <a>{teaser.tags}</a>
+        {teaser.tags?.map((tag) => (
+          <a>{tag}</a>
+        ))}
       </ul>
     </div>
   );
