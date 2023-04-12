@@ -6,7 +6,7 @@ function Teaser({ teaser }) {
       </h4>
       <p>{teaser.kurzbeschreibung}</p>
       <ul className="taglist">
-        <li>{teaser.tags}</li>
+        <a>{teaser.tags}</a>
       </ul>
     </div>
   );

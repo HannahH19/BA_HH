@@ -27,7 +27,6 @@ export default function Beitrag_form({ beitrag = {}, action }) {
             return
         }
         try {
-
             // Add the new friend!
             const id = await db.beitrag.add({
                 title,
@@ -159,10 +158,10 @@ export default function Beitrag_form({ beitrag = {}, action }) {
             toast.warn('Bitte wählen Sie eine Abteilung aus');
             return sichtbarkeit_list
         }
-       
+
 
         //Entweder Abteilungsübergreifend freigeben oder für bestimmte Abteilungen, nicht beides parralel
-        if(sichtbarkeit === 'Abteilungsübergreifend'){
+        if (sichtbarkeit === 'Abteilungsübergreifend') {
             sichtbarkeit_array = [sichtbarkeit]
             return sichtbarkeit_array;
         } else {
@@ -200,7 +199,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     return (
         <main className={action}>
 
-            <div className="beitrag">
+             <div className="beitrag">
                 <h2>Beitrag</h2>
                 <div id="title">
                     <h3 class="form_label">Titel</h3>
@@ -273,6 +272,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         onChange={ev => setAbteilung(ev.target.value)}
 
                         value={abteilung}>
+                        <option></option>
                         {abteilunglist().map((abteilung) => (
                             <option id={'abteilung_' + abteilung.id}>{abteilung.key}</option>
                         ))}
@@ -290,7 +290,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <button onClick={() => setSichtbarkeit(add_abteilung_sichtbar(sichtbarkeit, sichtbarkeit_option))}>Hinzufügen</button>
                     <ul className="tag_list_editor">
                         {sichtbarkeit?.map((abteilung, index) => (
-                            <li id={'sichtbarkeit_' +index}>
+                            <li id={'sichtbarkeit_' + index}>
                                 {abteilung}
                                 <button onClick={() => setSichtbarkeit(delete_abteilung_sichtbar(sichtbarkeit, index))} className="delete_tag">Abteilung löschen</button>
                             </li>
@@ -325,7 +325,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         value={author}
                         onChange={ev => setAuthor(ev.target.value)}
                     />
-                </div>
+                </div> 
 
 
                 <div className="edit">
@@ -395,3 +395,4 @@ function check_controll_date() {
     return [date_today, date_one_year];
 
 }
+
