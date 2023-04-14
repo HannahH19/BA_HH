@@ -214,8 +214,7 @@ h4 a {
 }
 
 .back_button {
-    text-decoration: none;
-    color: black;
+     margin-top: 50px;
 }
 
 .container {
@@ -730,6 +729,30 @@ textarea.pflicht {
 .app .app__product-list .product-preview .product-preview__price {
     font-size: 10px;
 }
+
+table{
+    border: 1px double #b3b3b3;
+    border-collapse: collapse;
+    border-spacing: 0;
+    height: 100%;
+    width: 100%;
+}
+
+td{
+    border: 1px solid #bfbfbf;
+    min-width: 2em;
+    padding: .4em;
+}
+
+th{
+    background: rgba(0,0,0,.05);
+    font-weight: 700;
+    text-align: left;
+    border: 1px solid #bfbfbf;
+    min-width: 2em;
+    padding: .4em;
+}
+
 
 /* --- In-editor product widget styles --------------------------------------------------- */
 

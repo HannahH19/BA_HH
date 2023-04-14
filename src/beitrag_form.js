@@ -77,6 +77,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
 
         }
         try {
+            console.log(text);
             const result = await db.beitrag.update(id, {
                 title: title,
                 text: text,
@@ -96,10 +97,11 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     }
 
     async function deleteBeitrag(id) {
+        alert(id);
         try {
             const result = await db.beitrag.delete(id);
             console.log(result);
-            window.open(`/`);
+            //window.open(`/`);
         } catch (error) {
 
         }
@@ -149,7 +151,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
 
     function deleteTag(tag_list, tag_index) {
         tag_list.splice(tag_index, 1);
-
+        document.getElementById('tag_' + tag_index).style.display = 'none';
         return tag_list;
     }
 
@@ -210,6 +212,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         <main className={action}>
 
             <div className="beitrag">
+            <button className="download back_button"><a href="javascript:history.back()">Zurück</a></button>
                 <h2>Beitrag</h2>
                 <div id="title">
                     <h3 class="form_label">Titel</h3>
@@ -263,9 +266,6 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                             console.log(ckeditor)
                             ckeditor.current.execute('insertProduct', id)
                         }}></BeitragList>
-
-
-
                 </div>
             </div>
             <div id="metadata" className="beitrag">
@@ -291,7 +291,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <p class="hinweis_form">Unter den gewählten Schlagworten kann der Beitrag später gefunden werden.</p>
                     <ul className="tag_list_editor">
                         {tags?.map((tag, index) => (
-                            <li>
+                            <li id={'tag_' + index}>
                                 {tag}
                                 <button onClick={() => setTags(deleteTag(tags, index))} className="delete_tag">Schlagwort löschen</button>
                             </li>

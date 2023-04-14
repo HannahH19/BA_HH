@@ -8,7 +8,6 @@ import Beitragpage_edit from './editor';
 import { ToastContainer } from 'react-toastify';
 import Beitrag_form from './beitrag_form';
 
-import { EditorFormPage } from './EditorFormPage';
 function App() {
 
   return (
@@ -16,7 +15,6 @@ function App() {
       <Menu></Menu>
       <ToastContainer />
       <Routes>
-        <Route path="/test" element={<EditorFormPage></EditorFormPage>}></Route>
         <Route path="/" element={<Startpage></Startpage>}></Route>
         <Route path="/beitrag/:id" element={<Beitragpage></Beitragpage>}></Route>
         <Route path="/beitrag/:id/edit" element={<Beitragpage_edit action="edit"></Beitragpage_edit>}></Route>

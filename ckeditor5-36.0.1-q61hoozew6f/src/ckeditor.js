@@ -25,7 +25,6 @@ import Table from '@ckeditor/ckeditor5-table/src/table.js';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
-import Abbreviation from '../abbreviation/abbreviation'
 import ProductPreviewEditing from 'ckeditor5-custom-build/productpreview/productpreviewediting';
 
 class Editor extends ClassicEditor { }
@@ -54,7 +53,6 @@ Editor.builtinPlugins = [
 	TableToolbar,
 	TextTransformation,
 	Underline,
-	Abbreviation,
 	ProductPreviewEditing
 ];
 
@@ -80,9 +78,7 @@ Editor.defaultConfig = {
 			'insertTable',
 			'mediaEmbed',
 			'undo',
-			'redo',
-			'abbreviation'
-		
+			'redo'
 		]
 	},
 	language: 'de',
@@ -98,7 +94,6 @@ Editor.defaultConfig = {
 		contentToolbar: [
 			'tableColumn',
 			'tableRow',
-			'mergeTableCells'
 		]
 	}
 };

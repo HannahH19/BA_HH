@@ -9,8 +9,8 @@ db.version(1).stores({
 db.open();
 
 const title = 'Parkplatzplan';
-const text = 'Parkplatzplan';
-const kurzbeschreibung = 'Parkplatzplan123';
+const text = 'Beispieltext'
+const kurzbeschreibung = 'Wo können Mitarbeiter parken?';
 const tags = ["Parkplatz", "Parken", "Mitarbeiter"];
 const sichtbarkeit = ['Abteilungsübergreifend'];
 const abteilung = 'Abteilungsübergreifend';
