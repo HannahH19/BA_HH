@@ -135,7 +135,7 @@ export class EditorFormPage extends React.Component{
                     }
                 ]}
                 onClick={( id ) => {
-                    this.editor.execute( 'insertProduct', id );
+                    this.editor.execute( 'inserBeitrag', id );
                     this.editor.editing.view.focus();
                 }}
             />

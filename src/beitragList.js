@@ -1,22 +1,25 @@
-// react/productlist.js
-
 import React from 'react';
 import BeitragPreview from './beitragPreview';
 export default class BeitragList extends React.Component {
     render() {
-        return <div className="beitrag_list">
-            <h3>Alle Beiträge:</h3>
-            <ul>
-                {this.props.products?.map( product => {
-                    return <li key={product.id}>
+        return <div className="beitrag_list_editor" style={{ display: 'none' }}>
+            <button onClick={() => document.querySelector('.beitrag_list_editor').style.display = 'none'}>Schließen</button>
+            <div className="search_beitrag_list">
+                <input type={'text'} className="searchbar" placeholder="Suchen Sie nach einem Beitrag"></input>
+                <button className="search_button">Suchen</button>
+            </div>
+            <div class="beitrag_overview">
+                {this.props.beitragList?.map(beitrag => {
+                    return <div key={beitrag.id}>
                         <BeitragPreview
-                            id={product.id}
+                            id={beitrag.id}
                             onClick={this.props.onClick}
-                            {...product}
+                            {...beitrag}
                         />
-                    </li>;
+                    </div>;
                 })}
-            </ul>
+            </div>
+            <p class="hinweis_form">Wählen Sie einen Beitrag. dessen Beitrag eingebunden werden soll. Beiträge die diesen bereits beinhalten oder bereits eingebunden wurden, können nicht eingebunden werden.</p>
         </div>;
     }
 }

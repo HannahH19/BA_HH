@@ -3,7 +3,6 @@ import { db } from "./db";
 import abteilunglist from "./Abteilung";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import BeitragPreview from "./beitragPreview";
 import { useLiveQuery } from "dexie-react-hooks";
 import BeitragList from "./beitragList";
 import { useRef } from "react";
@@ -12,6 +11,7 @@ import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 export default function Beitrag_form({ beitrag = {}, action }) {
+    const [id] = useState(beitrag.id);
     const [title, setTitle] = useState(beitrag.title);
     const [text, setText] = useState(beitrag.text);
     const [kurzbeschreibung, setKurzbeschreibungs] = useState(beitrag.kurzbeschreibung);
@@ -21,15 +21,29 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     const [author, setAuthor] = useState(beitrag.author);
     const [kontrolldatum, setKontrolldatum] = useState(beitrag.kontrolldatum);
     const [veroeffentlichungsdatum, setVeroeffentlichungsdatum] = useState(beitrag.veroeffentlichungsdatum);
+    const [linkedBeitraege, setLinkedBeitraege] = useState(beitrag.linkedBeitraege);
     const date_array = check_controll_date();
     const [tag, setTag] = useState('');
-    const [sichtbarkeit_option, setSichtbarkeitOption] = useState('');
-    const navigate = useNavigate();
-    const beitrag_list = useLiveQuery(() => db.beitrag.toArray());
+    const [sichtbarkeitOption, setSichtbarkeitOption] = useState('');
 
+    const navigate = useNavigate();
+
+    let beitragList = [];
+    let beitragListAll = useLiveQuery(() => db.beitrag.toArray());
+
+    if (!linkedBeitraege) {
+        setLinkedBeitraege([]);
+    }
+
+    if (action === 'edit') {
+        //Liste einbindbarer Beiträge festlegen
+        beitragList = checkEinbindbareBeitraege(beitragListAll, beitrag.id, linkedBeitraege);
+    }
+
+    //Beitrag einbinden Fenster Position
     async function addBeitrag() {
         if (!title || !text || !kurzbeschreibung || !tags || !abteilung || !sichtbarkeit || !author || !kontrolldatum || !veroeffentlichungsdatum) {
-            alert('Bitte füllen Sie alle Felder aus');
+            toast.info('Bitte füllen Sie alle Felder aus');
             return
         }
         try {
@@ -43,7 +57,8 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 sichtbarkeit,
                 author,
                 kontrolldatum,
-                veroeffentlichungsdatum
+                veroeffentlichungsdatum,
+                linkedBeitraege
             });
             console.log(id);
             navigate(`/`);
@@ -62,7 +77,8 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         sichtbarkeit,
         author,
         kontrolldatum,
-        veroeffentlichungsdatum) {
+        veroeffentlichungsdatum,
+        linkedBeitraege) {
         if (!title ||
             !text ||
             !kurzbeschreibung ||
@@ -72,12 +88,11 @@ export default function Beitrag_form({ beitrag = {}, action }) {
             !author ||
             !kontrolldatum ||
             !veroeffentlichungsdatum) {
-            alert('Kein Wert');
+            toast.info('Bitte füllen Sie alle Felder aus');
             return;
-
         }
         try {
-            console.log(text);
+            console.log(linkedBeitraege);
             const result = await db.beitrag.update(id, {
                 title: title,
                 text: text,
@@ -87,7 +102,8 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 sichtbarkeit: sichtbarkeit,
                 author: author,
                 kontrolldatum: kontrolldatum,
-                veroeffentlichungsdatum: veroeffentlichungsdatum
+                veroeffentlichungsdatum: veroeffentlichungsdatum,
+                linkedBeitraege: linkedBeitraege
             });
             console.log(result);
             navigate(`/`);
@@ -96,12 +112,11 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         }
     }
 
+    //Beitrag löschen
     async function deleteBeitrag(id) {
-        alert(id);
         try {
             const result = await db.beitrag.delete(id);
-            console.log(result);
-            //window.open(`/`);
+            navigate(`/`);
         } catch (error) {
 
         }
@@ -121,17 +136,17 @@ export default function Beitrag_form({ beitrag = {}, action }) {
 
         }
     }
-  
-    function addTag(tag_list, tag) {
+
+    function addTag(tagList, tag) {
         let tag_correct = true;
         let tag_array = [];
         if (!tag) {
             toast.warn('Bitte geben Sie ein Schlagwort ein');
-            return tag_list
+            return tagList
         }
-        if (tag_list) {
-            tag_array = tag_list;
-            tag_list?.forEach(element => {
+        if (tagList) {
+            tag_array = tagList;
+            tagList?.forEach(element => {
                 if (element == tag) {
                     toast.warn('Das Schlagwort ' + tag + ' existiert bereits, bitte geben Sie ein anderes Wort ein');
                     tag_correct = false;
@@ -149,36 +164,45 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         return tag_array;
     }
 
-    function deleteTag(tag_list, tag_index) {
-        tag_list.splice(tag_index, 1);
-        document.getElementById('tag_' + tag_index).style.display = 'none';
-        return tag_list;
+    //Ids der eingebundenen Beiträge aus Inhalt herausfiltern
+    function addLinkedBeitrag(data) {
+        const idList = [];
+        let text_array = data.match(/data-id="[0-9]+/g);
+        text_array?.forEach(element => {
+            idList.push(parseInt(element.replaceAll('data-id="', '')));
+
+        })
+
+        return idList;
+    }
+
+    function deleteTag(tagList, tagIndex) {
+        tagList.splice(tagIndex, 1);
+        document.getElementById('tag_' + tagIndex).style.display = 'none';
+        return tagList;
     }
 
     //Abteilung zur Sichtbarkeitsliste hinzufügen
     //Vorher: Prüfung, ob Wert übergeben oder Wert bereits in Liste vorhanden
-    function add_abteilung_sichtbar(sichtbarkeit_list, sichtbarkeit) {
-        console.log({ sichtbarkeit })
-        console.log({ sichtbarkeit_list })
+    function add_abteilung_sichtbar(sichtbarkeitList, sichtbarkeit) {
         let option_correct = true;
         let sichtbarkeit_array = [];
         if (!sichtbarkeit) {
             toast.warn('Bitte wählen Sie eine Abteilung aus');
-            return sichtbarkeit_list
+            return sichtbarkeitList
         }
-
 
         //Entweder Abteilungsübergreifend freigeben oder für bestimmte Abteilungen, nicht beides parralel
         if (sichtbarkeit === 'Abteilungsübergreifend') {
             sichtbarkeit_array = [sichtbarkeit]
             return sichtbarkeit_array;
         } else {
-            sichtbarkeit_list = sichtbarkeit_list?.filter(el => el !== 'Abteilungsübergreifend');
+            sichtbarkeitList = sichtbarkeitList?.filter(el => el !== 'Abteilungsübergreifend');
         }
 
-        if (sichtbarkeit_list) {
-            sichtbarkeit_array = sichtbarkeit_list;
-            sichtbarkeit_list?.forEach(element => {
+        if (sichtbarkeitList) {
+            sichtbarkeit_array = sichtbarkeitList;
+            sichtbarkeitList?.forEach(element => {
                 if (element == sichtbarkeit) {
                     toast.warn('Die Abteilung ' + sichtbarkeit + ' wurde bereits zur Liste der Abteilungen mit Zugang zu diesem Beitrag hinzugefügt');
                     option_correct = false;
@@ -198,21 +222,28 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     }
 
     //Abteilung aus Sichtbarkeitsliste löschen und Element ausblenden
-    function delete_abteilung_sichtbar(sichtbarkeit_list, index) {
-        sichtbarkeit_list.splice(index, 1);
+    function delete_abteilung_sichtbar(sichtbarkeitList, index) {
+        sichtbarkeitList.splice(index, 1);
         document.getElementById('sichtbarkeit_' + index).style.display = 'none';
-        return sichtbarkeit_list;
+        return sichtbarkeitList;
     }
 
     let ckeditor = useRef(null);
-    let beitrag_list_view = useRef(null);
-    beitrag_list_view.current = beitrag_list;
-
+    let beitragListView = useRef(null);
+    let beitragAlle = useRef(null);
+    beitragAlle.current = beitragListAll;
+    beitragListView.current = beitragList;
+    
+    //Titel der eingebundenen Beiträge laden
+    if(beitragAlle.current){
+        getTitelLinkedBeitraege(beitragAlle.current, linkedBeitraege)
+    }
+  
     return (
         <main className={action}>
 
             <div className="beitrag">
-            <button className="download back_button"><a href="javascript:history.back()">Zurück</a></button>
+                <button className="download back_button" onClick={() => navigate(-1)}>Zurück</button>
                 <h2>Beitrag</h2>
                 <div id="title">
                     <h3 class="form_label">Titel</h3>
@@ -224,47 +255,63 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         value={title}
                         onChange={ev => setTitle(ev.target.value)}
                     />
+                    <p className="hinweis_form">Bitte Geben Sie hier den Titel ihres Beitrags ein. Dieser Titel wird in der Vorschau des Beitrags
+                        angezeigt.
+                    </p>
                 </div>
                 <div className="content">
+                    <h3>Inhalt</h3>
                     <CKEditor
                         editor={Editor}
                         data={text}
                         config={{
-                            products: {
-                                productRenderer: (id, domElement) => {
+                            beitrag_list: {
+                    
+                                beitragRenderer: (id, domElement) => {
                                     const root = createRoot(domElement);
-                                    const product = beitrag_list_view.current?.find(product => product.id === id)
+                                    const beitrag = beitragListView.current?.find(beitrag => beitrag.id === id)
                                     root.render(
-                                        <div class="beitrag_einbinden">
-                                            <h2 className="linked_beitrag">{product?.title}</h2>
+                                        <div class="beitrag_einbinden" id={id}>
+                                            <h2 className="linked_beitrag">{beitrag?.title}</h2>
+                                            <p className="hinweis_linked_beitrag">Der Inhalt dieses Beitrages erscheint in der Nutzernansicht an dieser Stelle</p>
                                         </div>
-                                        // <BeitragPreview id={id} {...product}></BeitragPreview>
                                     )
                                 }
                             }
                         }}
+                    
                         onReady={editor => {
                             console.log('Editor is ready to use!', editor);
                             ckeditor.current = editor;
                         }}
                         onChange={(event, editor) => {
                             const data = editor.getData();
-                            setText(editor.getData());
+                            setText(data);
+                            const position = document.caretPositionfrom 
+                            //Bei Veränderungen im Text Liste mit eingebundenen Beiträgen aktualisieren
+                            setLinkedBeitraege(addLinkedBeitrag(data));
                             console.log({ event, editor, data });
+                            console.log({event});
                         }}
                         onBlur={(event, editor) => {
                             console.log('Blur.', editor);
                         }}
                         onFocus={(event, editor) => {
-                            console.log('Focus.', editor);
+                            console.log( beitragAlle.current);
                         }}
                     />
                     <BeitragList
                         key="beitrag-list"
-                        products={beitrag_list}
+                        //List jedes Mal mit linkedBeitraege Array filtern, um eingebundene Beiträge auszublenden
+                        beitragList={checkEinbindbareBeitraege(beitragList, id, linkedBeitraege)}
                         onClick={(id) => {
-                            console.log(ckeditor)
-                            ckeditor.current.execute('insertProduct', id)
+                            //Zweite Prüfung, ob geöffnerter Beitrag sich selbst beinhalten soll, als Absicherung
+                            if (id !== beitrag?.id || !linkedBeitraege.includes(id)) {
+                                ckeditor.current.execute('inserBeitrag', id)
+                                toast.success('Beitrag eingebunden')
+                            } else {
+                                toast.warn('Dieser Beitrag kann sich nicht selbst einbinden, bitte wählen Sie einen anderen')
+                            }
                         }}></BeitragList>
                 </div>
             </div>
@@ -282,18 +329,21 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 <div id="schlagworte">
                     <h3 className="form_label">Schlagworte</h3>
                     <input
+                        className="with_button"
                         placeholder="Mit welchen Schlagworten lässt sich das Thema des Beitrags beschreiben?"
                         value={tag}
-                        onChange={ev => { setTag(ev.target.value); console.log(tags) }}
+                        onChange={ev => { setTag(ev.target.value) }}
                         onKeyDown={ev => { if (ev.key === 'Enter') { setTags(addTag(tags, tag)) } }}
                     />
-                    <button onClick={() => setTags(addTag(tags, tag))}>Hinzufügen</button>
+                    <button onClick={() => setTags(addTag(tags, tag))} className="add_input">Hinzufügen</button>
                     <p class="hinweis_form">Unter den gewählten Schlagworten kann der Beitrag später gefunden werden.</p>
-                    <ul className="tag_list_editor">
+                    <ul className="tagList_editor">
                         {tags?.map((tag, index) => (
                             <li id={'tag_' + index}>
                                 {tag}
-                                <button onClick={() => setTags(deleteTag(tags, index))} className="delete_tag">Schlagwort löschen</button>
+                                <button onClick={() => setTags(deleteTag(tags, index))} className="delete_tag">X
+                                    <p className="tooltipp">Schlagwort löschen</p>
+                                </button>
                             </li>
                         ))}
                     </ul>
@@ -302,7 +352,6 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <h3 className="form_label">Abteilung</h3>
                     <select
                         onChange={ev => setAbteilung(ev.target.value)}
-
                         value={abteilung}>
                         <option></option>
                         {abteilunglist().map((abteilung) => (
@@ -313,22 +362,24 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 </div>
                 <div id="sichtbarkeit">
                     <h3 className="form_label">Sichtbarkeit</h3>
-                    <select onChange={ev => { setSichtbarkeitOption(ev.target.value); console.log(sichtbarkeit_option) }}>
+                    <select className="with_button" onChange={ev => { setSichtbarkeitOption(ev.target.value) }}>
                         <option id="empty"></option>
                         {abteilunglist().map((abteilung) => (
                             <option>{abteilung.key}</option>
                         ))}
                     </select>
-                    <button onClick={() => setSichtbarkeit(add_abteilung_sichtbar(sichtbarkeit, sichtbarkeit_option))}>Hinzufügen</button>
-                    <ul className="tag_list_editor">
+                    <button onClick={() => setSichtbarkeit(add_abteilung_sichtbar(sichtbarkeit, sichtbarkeitOption))} className="add_input">Hinzufügen</button>
+                    <p class="hinweis_form">Legen Sie fest, welche Abteilungen diesen Beitrag sehen können.</p>
+                    <ul className="tagList_editor">
                         {sichtbarkeit?.map((abteilung, index) => (
                             <li id={'sichtbarkeit_' + index}>
                                 {abteilung}
-                                <button onClick={() => setSichtbarkeit(delete_abteilung_sichtbar(sichtbarkeit, index))} className="delete_tag">Abteilung löschen</button>
+                                <button onClick={() => setSichtbarkeit(delete_abteilung_sichtbar(sichtbarkeit, index))} className="delete_tag">X
+                                    <p className="tooltipp">Abteilung entfernen</p>
+                                </button>
                             </li>
                         ))}
                     </ul>
-                    <p class="hinweis_form">Legen Sie fest, welche Abteilungen diesen Beitrag sehen können.</p>
                 </div>
                 <div id="pruefungsdatum">
                     <h3 className="form_label">Prüfungsdatum</h3>
@@ -360,7 +411,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 </div>
 
 
-                <div className="edit">
+                <div className="edit submit_button">
                     <button className="open" onClick={() => updateBeitrag(
                         beitrag.id,
                         title,
@@ -371,11 +422,12 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         sichtbarkeit,
                         author,
                         kontrolldatum,
-                        veroeffentlichungsdatum)}>Änderungen speichern</button>
+                        veroeffentlichungsdatum,
+                        linkedBeitraege)}>Änderungen speichern</button>
                     <button class="delete" onClick={() => deleteBeitrag(beitrag.id)}>Löschen</button>
                 </div>
 
-                <div className="add">
+                <div className="add finish_button">
                     <button
                         className="open"
                         onClick={addBeitrag}>
@@ -428,3 +480,54 @@ function check_controll_date() {
 
 }
 
+
+//Titel der eingebundenen Beiträge erhalten
+function getTitelLinkedBeitraege(beitragListAll, linkedBeitraege) {
+    if(!beitragListAll || !linkedBeitraege){
+        return
+    }
+    linkedBeitraege.forEach(id => {
+        const element = document.querySelector('[data-id="'+ id + '"] h2');
+        if (!element) {return}
+        const result = beitragListAll.filter( beitrag => beitrag.id === id);
+        if(!result){
+            element.remove();
+            toast.warn('Der Beitrag ' + id + ' existiert nicht mehr und kann nicht mehr eingebunden werden');
+        } else {
+            const titel = result[0].title;
+            element.innerHTML = titel;
+        }
+    })
+}
+
+//Prüfen, welche Beiträge in diesen eingbeunden werden können
+//Beiträge die diesen einbinden können nicht eingebunden werden
+//Das gilt auch für weitere Abstufungen 
+function checkEinbindbareBeitraege(beitragList, beitragId, linkedBeitraege) {
+    if (!beitragList || !linkedBeitraege) { return }
+    let filteredList = [];
+    let includesBeitragList = [];
+    //Geöffnenten Beitrag aus Liste filtern 
+    beitragList = beitragList?.filter(element => element.id !== beitragId);
+    //Beiträge die den geöffneten Einbinden beinhalten und bereits eingebundene Beiträge aus Liste filtern
+    beitragList.forEach(beitrag => {
+        if (beitrag.linkedBeitraege.includes(beitragId) || linkedBeitraege.includes(beitrag.id)) {
+            includesBeitragList.push(beitrag.id);
+        } else {
+            filteredList.push(beitrag);
+        }
+    });
+
+    //Beiträge die Beiträge einbinden, die den geöffneten Einbinden aus Liste filtern
+    filteredList.forEach((beitrag, index) => {
+        beitrag?.linkedBeitraege.forEach(element => {
+            if (includesBeitragList.includes(element)) {
+                includesBeitragList.push(beitrag.id);
+                filteredList.splice(index, 1);
+            }
+        })
+    });
+
+    return filteredList;
+
+}

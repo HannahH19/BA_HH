@@ -2,10 +2,11 @@ import Top from "./top";
 import TeaserList from "./Teaser";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
-function Startpage() {
 
+function Startpage() {
   const beitrag_list = useLiveQuery(() => db.beitrag.toArray());
 
+  console.log({beitrag_list});
   return (
     <main>
       <Top heading="Startseite"></Top>
@@ -19,4 +20,6 @@ function Startpage() {
 
 export default Startpage;
 
+function zuletzt_geoeffnet(list_beitraege){
 
+}

@@ -25,7 +25,8 @@ import Table from '@ckeditor/ckeditor5-table/src/table.js';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
-import ProductPreviewEditing from 'ckeditor5-custom-build/productpreview/productpreviewediting';
+import BeitragViewEditing from '../beitragPreview/beitrag_view_editing';
+import BeitragUi from '../beitragPreview/beitrag_ui';
 
 class Editor extends ClassicEditor { }
 
@@ -53,7 +54,8 @@ Editor.builtinPlugins = [
 	TableToolbar,
 	TextTransformation,
 	Underline,
-	ProductPreviewEditing
+	BeitragViewEditing,
+	BeitragUi
 ];
 
 // Markdown,
@@ -78,7 +80,9 @@ Editor.defaultConfig = {
 			'insertTable',
 			'mediaEmbed',
 			'undo',
-			'redo'
+			'redo',
+			'|',
+			'beitragAdd'
 		]
 	},
 	language: 'de',

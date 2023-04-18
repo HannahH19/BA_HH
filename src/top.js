@@ -4,7 +4,7 @@ function Top({ heading }) {
             <h1>{heading}</h1>
             <p>Nutzen Sie die Suche, um passende Informationen zu finden</p>
             <div className="search">
-                <input type={Text} className="searchbar"></input>
+                <input type={'text'} className="searchbar"></input>
                 <button className="search_button">Suchen</button>
             </div>
         </div>

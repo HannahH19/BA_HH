@@ -15,7 +15,6 @@ export default function Beitragpage() {
             const beitrag = await db.beitrag
                 .where({ id: parseInt(id) })
                 .toArray();
-
             return beitrag;
         }
     );
@@ -29,22 +28,18 @@ export default function Beitragpage() {
         return
     }
 
-    const test = beitrag_id.text
-
     const text = preFormatText(beitrag_id.text);
-
     const text_formatted = text.split('|');
     return (
         <main>
             <div className="beitrag">
-
                 <button className="download back_button"><a href="javascript:history.back()">Zurück</a></button>
-
                 <h1 className="title">{beitrag_id.title}</h1>
-                <button>Beitrag teilen</button>
-                <button><a href={`/beitrag/${(beitrag_id.id)}/edit`}>Bearbeiten</a></button>
+                <div className="button_options">
+                    <button>Beitrag teilen</button>
+                    <button><a href={`/beitrag/${(beitrag_id.id)}/edit`}>Bearbeiten</a></button>
+                </div>
                 <div className="content" >
-
                     {text_formatted.map((text) => (
                         <FormatText text={text}></FormatText>
                     ))}
@@ -54,28 +49,26 @@ export default function Beitragpage() {
     )
 }
 
-
 /* Ersetzt HTML Tags in übergenene Text zur weiteren Verarbeitung*/
 function preFormatText(text) {
+    //Öffnende Tags
     text = text.replaceAll('<blockquote><p>', '|blockquote ');
     text = text.replaceAll('<h2>', '|## ');
     text = text.replaceAll('<h3>', '|### ');
     text = text.replaceAll('<h4>', '|#### ');
-    // text = text.replaceAll('<a href=', '|href ')
     text = text.replaceAll('<section', '|section ');
     text = text.replaceAll('<figure', '|figure ');
-    // text = text.replaceAll('<u>', '*** ');
-    // text = text.replaceAll('<i>', '** ');
-    // text = text.replaceAll('<strong>', '* ');
     text = text.replaceAll('<ul>', '|ungeordnet_liste ');
     text = text.replaceAll('<ol>', '|geordnet_liste');
     text = text.replaceAll('</blockquote>', '');
     text = text.replaceAll('<p>', '|');
+    text = text.replaceAll('<br>', '|');
     text = text.replaceAll('<li>', 'listepunkt ');
     text = text.replaceAll('<tr>', 'row');
     text = text.replaceAll('<td>', 'column');
     text = text.replaceAll('<th>', '/header');
 
+    //Schließende Tags
     text = text.replaceAll('</tr>', '');
     text = text.replaceAll('</td>', '');
     text = text.replaceAll('</th>', '');
@@ -84,10 +77,6 @@ function preFormatText(text) {
     text = text.replaceAll('</h2>', '');
     text = text.replaceAll('</h3>', '');
     text = text.replaceAll('</h4>', '');
-    // text = text.replaceAll('</a>', '|');
-    // text = text.replaceAll('</u>', '');
-    // text = text.replaceAll('</i>', '');
-    // text = text.replaceAll('</strong>', '');
     text = text.replaceAll('</li>', '');
     text = text.replaceAll('</p>', '');
     text = text.replaceAll('</section>', '');
@@ -268,7 +257,6 @@ function StilFormat({ text }) {
         return (<u>{text.replace('u>', '')}</u>)
     } else if (text.includes('a href')) {
         const text_link = text.split('">');
-        console.log({ text_link })
         return (<a href={text_link[0].replace('a href="', '')}>{text_link[1]}</a>)
     } else {
         return (<>{text}</>)
@@ -291,18 +279,9 @@ function TableFormat({ text }) {
 
 //Text des eingebundenen Beitrags wird bei jedem öffnen neu aus DB geholt und erstellt, um Synchronität zu gewährleisen
 function EingebundenerBeitrag({ id }) {
-    const beitrag = useLiveQuery(
-        async () => {
-            const beitrag = await db.beitrag
-                .where({ id: parseInt(id) })
-                .toArray();
-            return beitrag;
-        }
-    );
-
+   const beitrag = GetBeitrag(id);
     if (!beitrag) { return }
     const beitrag_id = beitrag[0];
-
     const titel = preFormatText('<h2>' + beitrag_id.title + '</h2>');
     const text = preFormatText(beitrag_id.text);
     const text_formatted = text.split('|');
@@ -316,4 +295,16 @@ function EingebundenerBeitrag({ id }) {
         </div>
     )
 
+}
+
+export function GetBeitrag(id){
+    const beitrag = useLiveQuery(
+        async () => {
+            const beitrag = await db.beitrag
+                .where({ id: parseInt(id) })
+                .toArray();
+            return beitrag;
+        }
+    );
+    return beitrag;
 }
