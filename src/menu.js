@@ -5,7 +5,7 @@ function Menu() {
             <a href="/" className="activ">Startseite</a>
             <a href="suche_design_mockup.html">Suche</a>
             <a href="abteilung.html">Abteilungen</a>
-            <a href="login.html">Abmelden</a>
+            <a href="login.html" onClick={() => logout()}>Abmelden</a>
             <a href="/beitrag_neu">Neuer Beitrag</a>
         </nav>
         <section className="top-nav">
@@ -25,3 +25,7 @@ function Menu() {
   }
 
 export default Menu;
+
+function logout(){
+    sessionStorage.removeItem('Nutzer');
+}

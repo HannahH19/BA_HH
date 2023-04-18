@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 import Menu from "./menu";
 import './Styles/App.css';
@@ -11,18 +11,24 @@ import LoginOverlay from './login_overlay';
 
 function App() {
 
+  const [user, setUser] = useState(sessionStorage.getItem('Nutzer'));
+
+  if (!user) {
+    return <LoginOverlay />
+  }
+
   return (
     <div>
-        <Menu></Menu>
-        <ToastContainer />
-        <Routes>
-          <Route path="/" element={<Startpage></Startpage>}></Route>
-          <Route path="/beitrag/:id" element={<Beitragpage></Beitragpage>}></Route>
-          <Route path="/beitrag/:id/edit" element={<Beitragpage_edit action="edit"></Beitragpage_edit>}></Route>
-          <Route path="/beitrag_neu" element={<Beitrag_form action="add"></Beitrag_form>}></Route>
-        </Routes >
+      <Menu></Menu>
+      <ToastContainer />
+      <Routes>
+        <Route path="/" element={<Startpage></Startpage>}></Route>
+        <Route path="/beitrag/:id" element={<Beitragpage></Beitragpage>}></Route>
+        <Route path="/beitrag/:id/edit" element={<Beitragpage_edit action="edit"></Beitragpage_edit>}></Route>
+        <Route path="/beitrag_neu" element={<Beitrag_form action="add"></Beitrag_form>}></Route>
+      </Routes >
     </div >
   );
-}
 
+}
 export default App;

@@ -3,7 +3,7 @@ export const db = new Dexie('intranet');
 
 db.version(2).stores({
     beitrag: '++id, title, text, kurzbeschreibung, tags, sichtbarkeit, abteilung, autor, kontrolldatum, veroeffentlichungsdatum, linkedBeitraege',
-    benutzer: '++id, name, vorname, letzte_beitraege, editor, passwort'
+    benutzer: '++id, name, letzte_beitraege, editor, passwort'
 });
 
 
@@ -34,20 +34,20 @@ db.beitrag.add({
     linkedBeitraege
 });
 
+db.benutzer.clear();
+
 db.benutzer.add({
     id: 1,
-    name: "Musterfrau",
-    vorname: "Martina",
-    letzte_beitraege: ['1300', '1298', '1301'],
+    name: "Testeditor",
+    letzte_beitraege: [1300, 1298, 1301],
     editor: true,
     passwort: '123'
 });
 
 db.benutzer.add({
     id: 2,
-    name: "Mustermann",
-    vorname: "Manuell",
+    name: "Testnutzer",
     letzte_beitraege: [1300, 1298, 1301],
-    editor: true,
-    passwort: '123'
+    editor: false,
+    passwort: '234'
 });

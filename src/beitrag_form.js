@@ -233,15 +233,14 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     let beitragAlle = useRef(null);
     beitragAlle.current = beitragListAll;
     beitragListView.current = beitragList;
-    
+
     //Titel der eingebundenen Beiträge laden
-    if(beitragAlle.current){
+    if (beitragAlle.current) {
         getTitelLinkedBeitraege(beitragAlle.current, linkedBeitraege)
     }
-  
+
     return (
         <main className={action}>
-
             <div className="beitrag">
                 <button className="download back_button" onClick={() => navigate(-1)}>Zurück</button>
                 <h2>Beitrag</h2>
@@ -266,7 +265,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         data={text}
                         config={{
                             beitrag_list: {
-                    
+
                                 beitragRenderer: (id, domElement) => {
                                     const root = createRoot(domElement);
                                     const beitrag = beitragListView.current?.find(beitrag => beitrag.id === id)
@@ -279,7 +278,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                                 }
                             }
                         }}
-                    
+
                         onReady={editor => {
                             console.log('Editor is ready to use!', editor);
                             ckeditor.current = editor;
@@ -287,17 +286,17 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         onChange={(event, editor) => {
                             const data = editor.getData();
                             setText(data);
-                            const position = document.caretPositionfrom 
+                            const position = document.caretPositionfrom
                             //Bei Veränderungen im Text Liste mit eingebundenen Beiträgen aktualisieren
                             setLinkedBeitraege(addLinkedBeitrag(data));
                             console.log({ event, editor, data });
-                            console.log({event});
+                            console.log({ event });
                         }}
                         onBlur={(event, editor) => {
                             console.log('Blur.', editor);
                         }}
                         onFocus={(event, editor) => {
-                            console.log( beitragAlle.current);
+                            console.log(beitragAlle.current);
                         }}
                     />
                     <BeitragList
@@ -439,16 +438,13 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     )
 }
 
-/*
-Funktion prüft, ob Zielobjekt maximale Länge überschreitet
-*/
+//Funktion prüft, ob Zielobjekt maximale Länge überschreitet
 function check_length(max_length, target) {
     if (!target.value) {
         return
     }
     const value = target.value;
     if (value.length >= max_length && !target.classList.contains('pflicht')) {
-
         toast.warn('Bitte geben Sie maximal ' + max_length + ' Zeichen ein', {
             position: "top-right",
             autoClose: 5000,
@@ -464,7 +460,6 @@ function check_length(max_length, target) {
         target.classList.remove('pflicht');
     }
 }
-
 
 //Checken ob Datumn nicht weiter als ein Jahr und vor Heute ist
 function check_controll_date() {
@@ -483,14 +478,14 @@ function check_controll_date() {
 
 //Titel der eingebundenen Beiträge erhalten
 function getTitelLinkedBeitraege(beitragListAll, linkedBeitraege) {
-    if(!beitragListAll || !linkedBeitraege){
+    if (!beitragListAll || !linkedBeitraege) {
         return
     }
     linkedBeitraege.forEach(id => {
-        const element = document.querySelector('[data-id="'+ id + '"] h2');
-        if (!element) {return}
-        const result = beitragListAll.filter( beitrag => beitrag.id === id);
-        if(!result){
+        const element = document.querySelector('[data-id="' + id + '"] h2');
+        if (!element) { return }
+        const result = beitragListAll.filter(beitrag => beitrag.id === id);
+        if (!result) {
             element.remove();
             toast.warn('Der Beitrag ' + id + ' existiert nicht mehr und kann nicht mehr eingebunden werden');
         } else {
