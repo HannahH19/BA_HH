@@ -9,7 +9,7 @@ export default class BeitragList extends React.Component {
                 <input type={'text'} className="searchbar" placeholder="Suchen Sie nach einem Beitrag"></input>
                 <button className="search_button">Suchen</button>
             </div>
-            <div class="beitrag_overview">
+            <div className="beitrag_overview">
                 {this.props.beitragList?.map(beitrag => {
                     return <div key={beitrag.id}>
                         <BeitragPreview
@@ -20,7 +20,7 @@ export default class BeitragList extends React.Component {
                     </div>;
                 })}
             </div>
-            <p class="hinweis_form">Wählen Sie einen Beitrag. dessen Beitrag eingebunden werden soll. Beiträge die diesen bereits beinhalten oder bereits eingebunden wurden, können nicht eingebunden werden.</p>
+            <p className="hinweis_form">Wählen Sie einen Beitrag. dessen Beitrag eingebunden werden soll. Beiträge die diesen bereits beinhalten oder bereits eingebunden wurden, können nicht eingebunden werden.</p>
         </div>;
     }
 }

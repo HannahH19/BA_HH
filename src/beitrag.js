@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Beitragpage() {
     const { id } = useParams();
+    const nutzer = JSON.parse(sessionStorage.getItem('Nutzer'));
 
     if (!id) {
         alert('Keine Beitrag gefunden');
@@ -22,22 +23,37 @@ export default function Beitragpage() {
     if (!beitrag) {
         return
     }
-    const beitrag_id = beitrag[0];
 
-    if (!beitrag_id) {
+    const beitragId = beitrag[0];
+
+    if (!beitragId) {
         return
     }
 
-    const text = preFormatText(beitrag_id.text);
+    
+    //Liste der zuletzt geöffneten Beiträge aktualisieren
+    let zuletztGeoeffnet = nutzer.letzte_beitraege;
+    if (!zuletztGeoeffnet.includes(parseInt(id))) {
+        zuletztGeoeffnet.push(parseInt(id));
+         if (zuletztGeoeffnet.length > 3) {
+            zuletztGeoeffnet = zuletztGeoeffnet.slice(1, 4);
+        }
+        nutzer.letzte_beitraege = zuletztGeoeffnet;
+        sessionStorage.setItem('Nutzer', JSON.stringify(nutzer));
+        console.log({zuletztGeoeffnet})
+    }
+
+
+    const text = preFormatText(beitragId.text);
     const text_formatted = text.split('|');
     return (
         <main>
             <div className="beitrag">
                 <button className="download back_button"><a href="javascript:history.back()">Zurück</a></button>
-                <h1 className="title">{beitrag_id.title}</h1>
+                <h1 className="title">{beitragId.title}</h1>
                 <div className="button_options">
                     <button>Beitrag teilen</button>
-                    <button><a href={`/beitrag/${(beitrag_id.id)}/edit`}>Bearbeiten</a></button>
+                    {nutzer.editor && <button><a href={`/beitrag/${(beitragId.id)}/edit`}>Bearbeiten</a></button>}
                 </div>
                 <div className="content" >
                     {text_formatted.map((text) => (
@@ -179,7 +195,7 @@ function FormatText({ text }) {
         } else if (class_figure === "table") {
             //Tabelle
 
-            text = text.replaceAll('figure  class=\"table\">', '');
+            text = text.replaceAll('figure  className=\"table\">', '');
             text = text.replaceAll('</figure>', '');
             let table_array = text.split('row');
 
@@ -203,7 +219,7 @@ function FormatText({ text }) {
                     <table>
                         <thead>
                             <tr>
-                                {table_header?.slice(1).map((row) => (
+                                {table_header?.slice(1).map((row, index) => (
                                     <TableFormat text={row}></TableFormat>
                                 ))}
                             </tr>
@@ -211,7 +227,7 @@ function FormatText({ text }) {
                         <tbody>
                             {table_array?.map((row) => (
                                 <tr>
-                                    {row.split('column').slice(1).map((column) => (
+                                    {row.split('column').slice(1).map((column, index) => (
                                         <TableFormat text={column}></TableFormat>
                                     ))}
                                 </tr>
@@ -279,11 +295,11 @@ function TableFormat({ text }) {
 
 //Text des eingebundenen Beitrags wird bei jedem öffnen neu aus DB geholt und erstellt, um Synchronität zu gewährleisen
 function EingebundenerBeitrag({ id }) {
-   const beitrag = GetBeitrag(id);
+    const beitrag = GetBeitrag(id);
     if (!beitrag) { return }
-    const beitrag_id = beitrag[0];
-    const titel = preFormatText('<h2>' + beitrag_id.title + '</h2>');
-    const text = preFormatText(beitrag_id.text);
+    const beitragId = beitrag[0];
+    const titel = preFormatText('<h2>' + beitragId.title + '</h2>');
+    const text = preFormatText(beitragId.text);
     const text_formatted = text.split('|');
 
     return (
@@ -297,7 +313,7 @@ function EingebundenerBeitrag({ id }) {
 
 }
 
-export function GetBeitrag(id){
+export function GetBeitrag(id) {
     const beitrag = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag

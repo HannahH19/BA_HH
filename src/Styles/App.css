@@ -221,6 +221,11 @@ h4 a {
     color: red;
     padding-right: 15px;
 }
+
+.einarbeitung_teaser {
+    margin-bottom: 0;
+    padding: 20px 450px;
+}
 /* Beitrag */
 
 .back_button {
@@ -376,11 +381,6 @@ input,
 
 .katliste ul.taglist {
     margin-left: -10px;
-}
-
-.einarbeitung {
-    /* display: grid;
-    grid-template-columns: 2fr 4fr; */
 }
 
 .inhalt {

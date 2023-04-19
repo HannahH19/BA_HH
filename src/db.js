@@ -1,13 +1,55 @@
 import Dexie from "dexie";
 export const db = new Dexie('intranet');
 
-db.version(2).stores({
+db.version(3).stores({
     beitrag: '++id, title, text, kurzbeschreibung, tags, sichtbarkeit, abteilung, autor, kontrolldatum, veroeffentlichungsdatum, linkedBeitraege',
-    benutzer: '++id, name, letzte_beitraege, editor, passwort'
+    benutzer: '++id, name, letzte_beitraege, editor, passwort, abteilung',
+    leitfaden: '++id, abteilung, teil, text'
 });
 
-
 db.open();
+
+db.leitfaden.add({
+    id: 1,
+    abteilung: 'Abteilungsübergreifend',
+    teil: 1,
+    text: 'Leitfaden Teil 1'
+});
+
+db.leitfaden.add({
+    id: 2,
+    abteilung: 'Abteilungsübergreifend',
+    teil: 2,
+    text: 'Leitfaden Teil 2'
+});
+
+db.leitfaden.add({
+    id: 3,
+    abteilung: 'Abteilungsübergreifend',
+    teil: 2,
+    text: 'Leitfaden Teil 3'
+});
+
+db.leitfaden.add({
+    id: 4,
+    abteilung: 'Vertrieb',
+    teil: 1,
+    text: 'Vertrieb Leitfaden Teil 1'
+});
+
+db.leitfaden.add({
+    id: 5,
+    abteilung: 'Vertrieb',
+    teil: 2,
+    text: 'Vertrieb Leitfaden Teil 2'
+});
+
+db.leitfaden.add({
+    id: 6,
+    abteilung: 'Vertrieb',
+    teil: 2,
+    text: 'Vertrieb Leitfaden Teil 3'
+});
 
 const title = 'Parkplatzplan';
 const text = '123'
@@ -34,14 +76,15 @@ db.beitrag.add({
     linkedBeitraege
 });
 
-db.benutzer.clear();
+//db.benutzer.clear();
 
 db.benutzer.add({
     id: 1,
     name: "Testeditor",
     letzte_beitraege: [1300, 1298, 1301],
     editor: true,
-    passwort: '123'
+    passwort: '123',
+    abteilung: 'Vertrieb'
 });
 
 db.benutzer.add({
@@ -49,5 +92,6 @@ db.benutzer.add({
     name: "Testnutzer",
     letzte_beitraege: [1300, 1298, 1301],
     editor: false,
-    passwort: '234'
+    passwort: '234',
+    abteilung: 'Vertrieb'
 });

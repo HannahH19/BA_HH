@@ -1,6 +1,9 @@
+import Top from "./Top";
+
 export default function Suche() {
     return (
-        <div>
-        </div>
+        <main>
+            <Top heading="Suche"></Top>
+        </main>
     )
 }

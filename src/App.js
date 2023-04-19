@@ -10,6 +10,8 @@ import Beitrag_form from './BeitragForm';
 import { db } from './db';
 import Suche from './Suche';
 import AlleBeitraege from './AlleBeitraege';
+import Leitfaden from './Leitfaden';
+import LeitfadenForm from './LeitfadenForm';
 
 function App() {
   const [user, setUser] = useState(sessionStorage.getItem('Nutzer'));
@@ -55,10 +57,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Startpage></Startpage>}></Route>
         <Route path="/beitrag/:id" element={<Beitragpage></Beitragpage>}></Route>
-        <Route path="/beitrag/:id/edit" element={<Beitragpage_edit action="edit"></Beitragpage_edit>}></Route>
-        <Route path="/beitrag_neu" element={<Beitrag_form action="add"></Beitrag_form>}></Route>
         <Route path='/suche' element={<Suche></Suche>}></Route>
         <Route path='/alleBeitraege' element={<AlleBeitraege></AlleBeitraege>}></Route>
+        <Route path='/leitfaden' element={<Leitfaden></Leitfaden>}></Route>
+
+        <Route path='/leitfaden_neu' element={user.editor && <LeitfadenForm></LeitfadenForm>}></Route>
+        <Route path="/beitrag/:id/edit" element={user.editor && <Beitragpage_edit action="edit"></Beitragpage_edit>}></Route>
+        <Route path="/beitrag_neu" element={user.editor && <Beitrag_form action="add"></Beitrag_form>}></Route>
       </Routes >
     </div >
   );

@@ -4,7 +4,6 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
 
 function Startpage() {
-  const beitragList = useLiveQuery(() => db.beitrag.toArray());
   //Rolle des Nutzers
   const editor = JSON.parse(sessionStorage.getItem('Nutzer')).editor;
 
@@ -12,8 +11,9 @@ function Startpage() {
     <main>
       <Top heading="Startseite"></Top>
       <div className="content">
+        {!editor && <Einarbeitungsleitfaden></Einarbeitungsleitfaden>}
         {editor && <KontrollBeitraege></KontrollBeitraege>}
-        {!editor &&<ZuletzGeoeffnet beitraege={beitragList}></ZuletzGeoeffnet>}
+        <ZuletzGeoeffnet></ZuletzGeoeffnet>
       </div>
     </main>
   );
@@ -22,13 +22,34 @@ function Startpage() {
 
 export default Startpage;
 
-function ZuletzGeoeffnet({ beitraege }) {
-  if (!beitraege) { return }
-  const zuletztGeloeffnetList = JSON.parse(sessionStorage.getItem('Nutzer')).letzte_beitraege;
-  beitraege = beitraege?.filter(beitrag => zuletztGeloeffnetList.includes(beitrag.id));
-
+function Einarbeitungsleitfaden() {
   return (
-    <TeaserList beitraege={beitraege} heading="Zuletzt geöffnete Beiträge"></TeaserList>
+    <div className="einarbeitung_teaser">
+      <div className="teaser">
+        <h4>
+          <a href={`/leitfaden`}>Einarbeitungsleitfaden</a>
+        </h4>
+        <p>In diesem Leitfaden finden Sie alle relevanten Information und Abläufe für ihren Arbeitsalltag</p>
+      </div>
+    </div>
+  )
+}
+
+function ZuletzGeoeffnet() {
+  const zuletztGeloeffnetList = JSON.parse(sessionStorage.getItem('Nutzer')).letzte_beitraege;
+  const beitragList = useLiveQuery(
+    async () => {
+      const beitrag = await db.beitrag
+        .where('id')
+        .anyOf(zuletztGeloeffnetList)
+        .toArray();
+      return beitrag;
+    }
+  );
+
+  //Liste der drei zuletzt geöffneten Beiträge, nicht nach Öffnungszeitraum sortiert
+  return (
+    <TeaserList beitraege={beitragList} heading="Zuletzt geöffnete Beiträge"></TeaserList>
   )
 }
 

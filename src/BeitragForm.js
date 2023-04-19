@@ -245,7 +245,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 <button className="download back_button" onClick={() => navigate(-1)}>Zurück</button>
                 <h2>Beitrag</h2>
                 <div id="title">
-                    <h3 class="form_label">Titel</h3>
+                    <h3 className="form_label">Titel</h3>
                     <input
                         id='title_input'
                         onKeyUp={ev => { check_length(50, ev.target); checkTitel(ev.target.value) }}
@@ -270,7 +270,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                                     const root = createRoot(domElement);
                                     const beitrag = beitragListView.current?.find(beitrag => beitrag.id === id)
                                     root.render(
-                                        <div class="beitrag_einbinden" id={id}>
+                                        <div className="beitrag_einbinden" id={id}>
                                             <h2 className="linked_beitrag">{beitrag?.title}</h2>
                                             <p className="hinweis_linked_beitrag">Der Inhalt dieses Beitrages erscheint in der Nutzernansicht an dieser Stelle</p>
                                         </div>
@@ -335,7 +335,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         onKeyDown={ev => { if (ev.key === 'Enter') { setTags(addTag(tags, tag)) } }}
                     />
                     <button onClick={() => setTags(addTag(tags, tag))} className="add_input">Hinzufügen</button>
-                    <p class="hinweis_form">Unter den gewählten Schlagworten kann der Beitrag später gefunden werden.</p>
+                    <p className="hinweis_form">Unter den gewählten Schlagworten kann der Beitrag später gefunden werden.</p>
                     <ul className="tagList_editor">
                         {tags?.map((tag, index) => (
                             <li id={'tag_' + index}>
@@ -357,7 +357,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                             <option id={'abteilung_' + abteilung.id}>{abteilung.key}</option>
                         ))}
                     </select>
-                    <p class="hinweis_form">Unter dieser Abteilung wird ihr Beitrag später zu finden sein.</p>
+                    <p className="hinweis_form">Unter dieser Abteilung wird ihr Beitrag später zu finden sein.</p>
                 </div>
                 <div id="sichtbarkeit">
                     <h3 className="form_label">Sichtbarkeit</h3>
@@ -368,7 +368,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         ))}
                     </select>
                     <button onClick={() => setSichtbarkeit(add_abteilung_sichtbar(sichtbarkeit, sichtbarkeitOption))} className="add_input">Hinzufügen</button>
-                    <p class="hinweis_form">Legen Sie fest, welche Abteilungen diesen Beitrag sehen können.</p>
+                    <p className="hinweis_form">Legen Sie fest, welche Abteilungen diesen Beitrag sehen können.</p>
                     <ul className="tagList_editor">
                         {sichtbarkeit?.map((abteilung, index) => (
                             <li id={'sichtbarkeit_' + index}>
@@ -388,7 +388,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         max={date_array[1]}
                         value={kontrolldatum}
                         onChange={ev => setKontrolldatum(ev.target.value)}></input>
-                    <p class="hinweis_form">Wählen Sie das Datum, an dem der Beitrag erneut auf Vollständigkeit und Richtigkeit geprüft werden soll.</p>
+                    <p className="hinweis_form">Wählen Sie das Datum, an dem der Beitrag erneut auf Vollständigkeit und Richtigkeit geprüft werden soll.</p>
                 </div>
                 <div id="veroeffentlichungsdatum">
                     <h3 className="form_label">Veröffentlichungsdatum</h3>
@@ -398,7 +398,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         max={kontrolldatum}
                         value={veroeffentlichungsdatum}
                         onChange={ev => setVeroeffentlichungsdatum(ev.target.value)}></input>
-                    <p class="hinweis_form">Wählen Sie das Datum, an dem der Beitrag veröffentlicht werden soll.</p>
+                    <p className="hinweis_form">Wählen Sie das Datum, an dem der Beitrag veröffentlicht werden soll.</p>
                 </div>
                 <div>
                     <h3>Autor:</h3>
@@ -423,7 +423,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         kontrolldatum,
                         veroeffentlichungsdatum,
                         linkedBeitraege)}>Änderungen speichern</button>
-                    <button class="delete" onClick={() => deleteBeitrag(beitrag.id)}>Löschen</button>
+                    <button className="delete" onClick={() => deleteBeitrag(beitrag.id)}>Löschen</button>
                 </div>
 
                 <div className="add finish_button">
