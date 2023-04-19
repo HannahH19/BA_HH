@@ -215,6 +215,12 @@ h4 a {
     color: black;
 }
 
+.kontrolldatum{
+    float: right;
+    font-weight: bold;
+    color: red;
+    padding-right: 15px;
+}
 /* Beitrag */
 
 .back_button {

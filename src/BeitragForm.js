@@ -18,7 +18,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     const [tags, setTags] = useState(beitrag.tags);
     const [abteilung, setAbteilung] = useState(beitrag.abteilung);
     const [sichtbarkeit, setSichtbarkeit] = useState(beitrag.sichtbarkeit);
-    const [author, setAuthor] = useState(JSON.parse(sessionStorage.getItem('Nutzer')).name);
+    const [autor, setAutor] = useState(JSON.parse(sessionStorage.getItem('Nutzer')).name);
     const [kontrolldatum, setKontrolldatum] = useState(beitrag.kontrolldatum);
     const [veroeffentlichungsdatum, setVeroeffentlichungsdatum] = useState(beitrag.veroeffentlichungsdatum);
     const [linkedBeitraege, setLinkedBeitraege] = useState(beitrag.linkedBeitraege);
@@ -42,7 +42,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
 
     //Beitrag einbinden Fenster Position
     async function addBeitrag() {
-        if (!title || !text || !kurzbeschreibung || !tags || !abteilung || !sichtbarkeit || !author || !kontrolldatum || !veroeffentlichungsdatum) {
+        if (!title || !text || !kurzbeschreibung || !tags || !abteilung || !sichtbarkeit || !autor || !kontrolldatum || !veroeffentlichungsdatum) {
             toast.info('Bitte füllen Sie alle Felder aus');
             return
         }
@@ -55,7 +55,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 tags,
                 abteilung,
                 sichtbarkeit,
-                author,
+                autor,
                 kontrolldatum,
                 veroeffentlichungsdatum,
                 linkedBeitraege
@@ -75,7 +75,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         tags,
         abteilung,
         sichtbarkeit,
-        author,
+        autor,
         kontrolldatum,
         veroeffentlichungsdatum,
         linkedBeitraege) {
@@ -85,7 +85,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
             !tags ||
             !abteilung ||
             !sichtbarkeit ||
-            !author ||
+            !autor ||
             !kontrolldatum ||
             !veroeffentlichungsdatum) {
             toast.info('Bitte füllen Sie alle Felder aus');
@@ -100,7 +100,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                 tags: tags,
                 abteilung: abteilung,
                 sichtbarkeit: sichtbarkeit,
-                author: author,
+                autor: autor,
                 kontrolldatum: kontrolldatum,
                 veroeffentlichungsdatum: veroeffentlichungsdatum,
                 linkedBeitraege: linkedBeitraege
@@ -404,8 +404,8 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <h3>Autor:</h3>
                     <input
                         type="text"
-                        value={author}
-                        onChange={ev => setAuthor(ev.target.value)}
+                        value={autor}
+                        onChange={ev => setAutor(ev.target.value)}
                     />
                 </div>
 
@@ -419,7 +419,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         tags,
                         abteilung,
                         sichtbarkeit,
-                        author,
+                        autor,
                         kontrolldatum,
                         veroeffentlichungsdatum,
                         linkedBeitraege)}>Änderungen speichern</button>
@@ -463,15 +463,15 @@ function check_length(max_length, target) {
 
 //Checken ob Datumn nicht weiter als ein Jahr und vor Heute ist
 function check_controll_date() {
-    const date = new Date();
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
+    const datum = new Date();
+    const tag = String(datum.getDate()).padStart(2, '0');
+    const monat = String(datum.getMonth() + 1).padStart(2, '0');
+    const jahr = datum.getFullYear();
 
-    const date_today = String(year) + '-' + String(month) + '-' + String(day);
-    const date_one_year = String(year + 1) + '-' + String(month) + '-' + String(day);
+    const datumHeute = String(jahr) + '-' + String(monat) + '-' + String(tag);
+    const dateEinJahr = String(jahr + 1) + '-' + String(monat) + '-' + String(tag);
 
-    return [date_today, date_one_year];
+    return [datumHeute, dateEinJahr];
 
 }
 

@@ -7,7 +7,7 @@ function Menu() {
             <nav>
                 <a href="/">Startseite</a>
                 <a href="/suche">Suche</a>
-                <a href="/alleBeitraege">Abteilungen</a>
+                <a href="/alleBeitraege">Alle Beiträge</a>
                 {editor && <a href="/beitrag_neu">Neuer Beitrag</a>}
                 {editor && <a href="/beitrag_neu">Neuer Leitfaden</a>}
                 {editor && <a href="/">Einarbeitungsleitfaden</a>}
@@ -21,7 +21,7 @@ function Menu() {
                 <ul className="menu">
                     <li><a href="/">Startseite</a></li>
                     <li><a href="/suche" className="activ">Suche</a></li>
-                    <li><a href="/alleBeitraege">Abteilungen</a></li>
+                    <li><a href="/alleBeitraege">Alle Beiträge</a></li>
                     <li>{editor && <a href="/beitrag_neu">Neuer Beitrag</a>}</li>
                     <li>{editor && <a href="/beitrag_neu">Neuer Leitfaden</a>}</li>
                     <li>{editor && <a href="/">Einarbeitungsleitfaden</a>}</li>
