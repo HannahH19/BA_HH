@@ -2,10 +2,10 @@ function Menu() {
     return (
         <header>
         <nav>
-            <a href="/" className="activ">Startseite</a>
+            <a href="/">Startseite</a>
             <a href="suche_design_mockup.html">Suche</a>
             <a href="abteilung.html">Abteilungen</a>
-            <a href="login.html" onClick={() => logout()}>Abmelden</a>
+            <a href="/" onClick={() => logout()}>Abmelden</a>
             <a href="/beitrag_neu">Neuer Beitrag</a>
         </nav>
         <section className="top-nav">

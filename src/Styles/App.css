@@ -549,7 +549,7 @@ textarea.pflicht {
     gap: 10px;
 }
 
-.beitrag_preview{
+.beitrag_preview {
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -557,18 +557,18 @@ textarea.pflicht {
     align-items: flex-start;
 }
 
-.beitrag_titel{
+.beitrag_titel {
     margin: 0;
 }
 
-.search_beitrag_list{
+.search_beitrag_list {
     display: flex;
     gap: 15px;
     justify-content: space-between;
     width: 100%;
 }
 
-.search_beitrag_list input{
+.search_beitrag_list input {
     width: 100%;
 }
 
@@ -610,7 +610,7 @@ th {
 }
 
 /* Login Form */
-.login_form{
+.login_form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -619,17 +619,17 @@ th {
     box-shadow: 4px 6px 13px 1px #00000075;
 }
 
-.login_form label{
+.login_form label {
     width: 100%;
     margin-top: 10px;
 }
 
-.login_form button{
+.login_form button {
     margin-top: 20px;
     width: fit-content;
 }
 
-.login_overlay{
+.login_overlay {
     width: 100vw;
     height: 100vh;
     display: flex;

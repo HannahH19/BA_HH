@@ -7,14 +7,43 @@ import Beitragpage, { AddBeitragForm } from './beitrag';
 import Beitragpage_edit from './editor';
 import { ToastContainer } from 'react-toastify';
 import Beitrag_form from './beitrag_form';
-import LoginOverlay from './login_overlay';
+import { db } from './db';
 
 function App() {
-
   const [user, setUser] = useState(sessionStorage.getItem('Nutzer'));
 
+  //Nutzer mit Daten aus Datenbank holen
+  //Wenn Daten richtig, dann wird Nutzer eingeloggt und kann Seite nutzen
+  async function checkNutzerData(nutzername, passwort) {
+    if (nutzername === '' || passwort === '') {
+      alert('Bitte geben Sie ihre Anmeldedaten ein');
+      return
+    }
+    try {
+      const nutzer = await db.benutzer.where({ name: nutzername, passwort: passwort }).first();
+      if (nutzer) {
+        sessionStorage.setItem('Nutzer', JSON.stringify(nutzer));
+        setUser(nutzer);
+      } else {
+        alert('Nutzername oder Passwort ist falsch!');
+      }
+    } catch (error) {
+
+    }
+  }
+
   if (!user) {
-    return <LoginOverlay />
+    return (
+      <div className="login_overlay">
+        <div className="login_form">
+          <label>Name</label>
+          <input type="text" id="nutzername"></input>
+          <label>Passwort</label>
+          <input type="password" id="passwort"></input>
+          <button className="open" onClick={() => { checkNutzerData(document.querySelector('#nutzername').value, document.querySelector('#passwort').value) }}>Anmelden</button>
+        </div>
+      </div>
+    )
   }
 
   return (
