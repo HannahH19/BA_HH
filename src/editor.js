@@ -6,7 +6,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import abteilunglist from "./Abteilung";
 import { useState } from "react";
-import Beitrag_form from "./beitrag_form";
+import Beitrag_form from "./BeitragForm";
 
 export default function Beitragpage_edit() {
 
@@ -25,7 +25,6 @@ export default function Beitragpage_edit() {
         }
     );
 
-    console.log(beitrag)
     if (!beitrag) {
         return
     }

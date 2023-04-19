@@ -1,17 +1,17 @@
-import Top from "./top";
+import Top from "./Top";
 import TeaserList from "./Teaser";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
 
 function Startpage() {
-  const beitrag_list = useLiveQuery(() => db.beitrag.toArray());
+  const beitragList = useLiveQuery(() => db.beitrag.toArray());
 
-  console.log({beitrag_list});
   return (
     <main>
       <Top heading="Startseite"></Top>
       <div className="content">
-        <TeaserList beitraege={beitrag_list} heading="Zuletzt geöffnete Beiträge"></TeaserList>
+        <KontrollBeitraege></KontrollBeitraege>
+        <ZuletzGeoeffnet beitraege={beitragList}></ZuletzGeoeffnet>
       </div>
     </main>
   );
@@ -20,6 +20,32 @@ function Startpage() {
 
 export default Startpage;
 
-function zuletzt_geoeffnet(list_beitraege){
+function ZuletzGeoeffnet({ beitraege }) {
+  if (!beitraege) { return }
+  const zuletztGeloeffnetList = JSON.parse(sessionStorage.getItem('Nutzer')).letzte_beitraege;
+  beitraege = beitraege?.filter(beitrag => zuletztGeloeffnetList.includes(beitrag.id));
 
+  return (
+    <TeaserList beitraege={beitraege} heading="Zuletzt geöffnete Beiträge"></TeaserList>
+  )
+}
+
+function KontrollBeitraege() {
+  const autor = JSON.parse(sessionStorage.getItem('Nutzer')).name;
+  console.log(autor)
+
+  const beitragList = useLiveQuery(
+    async () => {
+      const beitrag = await db.beitrag
+        .orderBy('kontrolldatum')
+        .toArray();
+      return beitrag;
+    }
+  );
+
+
+  return (
+    <div></div>
+  )
+  console.log({ beitragList })
 }

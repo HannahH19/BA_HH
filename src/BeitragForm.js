@@ -4,7 +4,7 @@ import abteilunglist from "./Abteilung";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLiveQuery } from "dexie-react-hooks";
-import BeitragList from "./beitragList";
+import BeitragList from "./BeitragList";
 import { useRef } from "react";
 import { createRoot } from "react-dom/client";
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
@@ -18,7 +18,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     const [tags, setTags] = useState(beitrag.tags);
     const [abteilung, setAbteilung] = useState(beitrag.abteilung);
     const [sichtbarkeit, setSichtbarkeit] = useState(beitrag.sichtbarkeit);
-    const [author, setAuthor] = useState(beitrag.author);
+    const [author, setAuthor] = useState(JSON.parse(sessionStorage.getItem('Nutzer')).name);
     const [kontrolldatum, setKontrolldatum] = useState(beitrag.kontrolldatum);
     const [veroeffentlichungsdatum, setVeroeffentlichungsdatum] = useState(beitrag.veroeffentlichungsdatum);
     const [linkedBeitraege, setLinkedBeitraege] = useState(beitrag.linkedBeitraege);

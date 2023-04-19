@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Routes, Route } from "react-router-dom";
-import Menu from "./menu";
+import Menu from './Menu';
 import './Styles/App.css';
-import Startpage from './homePage';
-import Beitragpage, { AddBeitragForm } from './beitrag';
-import Beitragpage_edit from './editor';
+import Startpage from './HomePage';
+import Beitragpage, { AddBeitragForm } from './Beitrag';
+import Beitragpage_edit from './Editor';
 import { ToastContainer } from 'react-toastify';
-import Beitrag_form from './beitrag_form';
+import Beitrag_form from './BeitragForm';
 import { db } from './db';
+import Suche from './Suche';
+import AlleBeitraege from './AlleBeitraege';
 
 function App() {
   const [user, setUser] = useState(sessionStorage.getItem('Nutzer'));
@@ -55,6 +57,8 @@ function App() {
         <Route path="/beitrag/:id" element={<Beitragpage></Beitragpage>}></Route>
         <Route path="/beitrag/:id/edit" element={<Beitragpage_edit action="edit"></Beitragpage_edit>}></Route>
         <Route path="/beitrag_neu" element={<Beitrag_form action="add"></Beitrag_form>}></Route>
+        <Route path='/suche' element={<Suche></Suche>}></Route>
+        <Route path='/alleBeitraege' element={<AlleBeitraege></AlleBeitraege>}></Route>
       </Routes >
     </div >
   );

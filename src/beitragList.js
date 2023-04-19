@@ -1,5 +1,6 @@
 import React from 'react';
-import BeitragPreview from './beitragPreview';
+import BeitragPreview from './BeitragPreview';
+
 export default class BeitragList extends React.Component {
     render() {
         return <div className="beitrag_list_editor" style={{ display: 'none' }}>

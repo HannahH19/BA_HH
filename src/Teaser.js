@@ -1,6 +1,6 @@
 function Teaser({ teaser }) {
   return (
-    <div className="teaser" teaser={teaser} key={teaser.id}>
+    <div className="teaser" teaser={teaser}>
       <h4>
         <a href={`/beitrag/${(teaser.id)}`}>{teaser.title}</a>
       </h4>

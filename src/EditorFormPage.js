@@ -15,8 +15,8 @@ import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
 
 // React components to render the list of products and the product preview.
-import BeitragList from './beitragList';
-import BeitragPreview from './beitragPreview';
+import BeitragList from './BeitragList';
+import BeitragPreview from './BeitragPreview';
 
 // The React application class. It renders the editor and the product list.
 export class EditorFormPage extends React.Component{
