@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Menu from './Menu';
 import './Styles/App.css';
 import Startpage from './HomePage';
-import Beitragpage, { AddBeitragForm } from './Beitrag';
+import Beitragpage from './Beitrag';
 import Beitragpage_edit from './Editor';
 import { ToastContainer } from 'react-toastify';
 import Beitrag_form from './BeitragForm';

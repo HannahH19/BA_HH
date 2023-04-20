@@ -286,7 +286,6 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         onChange={(event, editor) => {
                             const data = editor.getData();
                             setText(data);
-                            const position = document.caretPositionfrom
                             //Bei Veränderungen im Text Liste mit eingebundenen Beiträgen aktualisieren
                             setLinkedBeitraege(addLinkedBeitrag(data));
                             console.log({ event, editor, data });

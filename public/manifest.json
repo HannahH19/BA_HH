@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Intranet App",
+  "name": "Prototyp für das Intranet eines mittelständischen Handelsunternehmens",
   "icons": [
     {
       "src": "favicon.ico",

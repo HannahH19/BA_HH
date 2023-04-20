@@ -23,7 +23,7 @@ function TeaserList({ beitraege, heading, kontrolldatum = false }) {
     <div className="container">
       <h3>{heading}</h3>
       <div className="beitrag_list">
-        {beitraege.map((beitrag) => (
+        {beitraege?.map((beitrag) => (
           <Teaser key={beitrag.id} teaser={beitrag} kontrolldatum={kontrolldatum} />
         ))}
       </div>
