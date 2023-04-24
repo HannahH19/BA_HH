@@ -240,7 +240,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     }
 
     return (
-        <main className={action}>
+        <div className={action}>
             <div className="beitrag">
                 <button className="download back_button" onClick={() => navigate(-1)}>Zurück</button>
                 <h2>Beitrag</h2>
@@ -259,7 +259,8 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     </p>
                 </div>
                 <div className="content">
-                    <h3>Inhalt</h3>
+                    <h3 className="form_label">Inhalt</h3>
+                    <p className="hinweis_form">Bitte Geben Sie hier den Inhalt ihres Beitrags ein.</p>
                     <CKEditor
                         editor={Editor}
                         data={text}
@@ -400,7 +401,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <p className="hinweis_form">Wählen Sie das Datum, an dem der Beitrag veröffentlicht werden soll.</p>
                 </div>
                 <div>
-                    <h3>Autor:</h3>
+                    <h3 className="form_label">Autor:</h3>
                     <input
                         type="text"
                         value={autor}
@@ -425,7 +426,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <button className="delete" onClick={() => deleteBeitrag(beitrag.id)}>Löschen</button>
                 </div>
 
-                <div className="add finish_button">
+                <div className="add submit_button">
                     <button
                         className="open"
                         onClick={addBeitrag}>
@@ -433,7 +434,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     </button>
                 </div>
             </div>
-        </main >
+        </div >
     )
 }
 

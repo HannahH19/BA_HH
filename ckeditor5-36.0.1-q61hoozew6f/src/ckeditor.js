@@ -88,10 +88,7 @@ Editor.defaultConfig = {
 	language: 'de',
 	image: {
 		toolbar: [
-			'imageTextAlternative',
-			'imageStyle:inline',
-			'imageStyle:block',
-			'imageStyle:side'
+			'imageTextAlternative'
 		]
 	},
 	table: {

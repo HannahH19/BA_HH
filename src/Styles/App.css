@@ -11,7 +11,7 @@ body {
     padding: 0;
     margin: 0;
     font-family: 'Arial', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.5rem;
     background: whitesmoke;
 }
@@ -45,8 +45,7 @@ h4 {
 
 button {
     font-size: 0.9rem;
-
-    color: var(--color);
+    color: black;
     transition: 0.25s;
 }
 
@@ -70,6 +69,7 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
+    box-shadow: 3px 1px 4px #00000024;
 }
 
 header nav {
@@ -97,7 +97,7 @@ header a {
     justify-content: center;
     background: linear-gradient(var(--gradient_blue1), var(--gradient_blue2));
     color: white;
-   
+
 }
 
 .top h1 {
@@ -110,7 +110,7 @@ header a {
 }
 
 .search button {
-    margin-left: 10px;
+    margin-left: 15px;
 }
 
 .top input {
@@ -162,15 +162,14 @@ button.open {
     border: none;
 }
 
-.ergebnis{
+.ergebnis {
     padding: 20px 0px;
 }
-
 
 /* Content Startseite */
 .content {
     background: whitesmoke;
-    padding: 50px 0px;
+    padding: 0px;
 }
 
 .container {
@@ -249,12 +248,9 @@ h4 a {
 }
 
 .beitrag {
-    padding: 20px 25%;
+    padding: 20px 30%;
     padding-top: 45px;
     background: rgb(255, 255, 255);
-
-    /* padding-bottom: 40px; */
-
 }
 
 .beitrag .content {
@@ -272,7 +268,7 @@ h4 a {
     margin-bottom: -50px;
 }
 
-button:not(.delete_tag):not(.active):not(.filter) {
+button:not(.delete_tag):not(.active):not(.filter):not(.ck):not(.open) {
     border: 1px solid #e6e6e6;
     box-shadow: 0 1px 2px 0 rgb(16 24 40 / 5%);
     color: #1f2022;
@@ -290,17 +286,35 @@ h1.title {
     padding: 0;
 }
 
+/*Beitrag Form */
 
+.edit{
+    display: grid;
+    /* grid-template-columns: 2fr 1fr; */
+}
 #metadata {
     background: whitesmoke;
+    /* padding: 20px 15%; */
 }
 
 #metadata button:not(.open) {
     background-color: white;
 }
 
+.hinweis_form {
+    color: grey;
+    margin-top: 3px;
+}
 
-/*Beitrag Form */
+.form_label {
+    margin-bottom: 10px;
+}
+
+.edit .content,
+.add .content {
+    padding: 0px;
+}
+
 .ck.ck-editor {
     width: calc(100% + 10px) !important;
 }
@@ -394,7 +408,6 @@ input,
 }
 
 .inhalt {
-    /* background-color: whitesmoke; */
     padding: 5%;
     width: 20%;
     height: 100%;
@@ -406,25 +419,12 @@ input,
 }
 
 .einarbeitung .beitrag {
-    /* border-left: 1px solid whitesmoke; */
     padding-left: 35%;
 }
 
 .einarbeitung h2 {
     margin-bottom: 0;
 }
-
-/*Beitrag Editor*/
-.hinweis_form {
-    color: grey;
-    margin-top: 10px;
-}
-
-.form_label {
-    margin-bottom: 10px;
-}
-
-
 
 /*Test CK Editor*/
 /* style.css */
@@ -655,8 +655,6 @@ th {
 }
 
 
-
-
 /*Anpassung kleinere Bildschirme*/
 
 /* Mobile Navigation */
@@ -798,4 +796,9 @@ th {
     header nav {
         padding: 0.2rem 10%;
     }
+}
+
+
+option[selected=true]{
+    background: red !important;
 }

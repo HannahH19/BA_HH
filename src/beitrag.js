@@ -30,17 +30,15 @@ export default function Beitragpage() {
         return
     }
 
-    
     //Liste der zuletzt geöffneten Beiträge aktualisieren
     let zuletztGeoeffnet = nutzer.letzte_beitraege;
     if (!zuletztGeoeffnet.includes(parseInt(id))) {
         zuletztGeoeffnet.push(parseInt(id));
-         if (zuletztGeoeffnet.length > 3) {
+        if (zuletztGeoeffnet.length > 3) {
             zuletztGeoeffnet = zuletztGeoeffnet.slice(1, 4);
         }
         nutzer.letzte_beitraege = zuletztGeoeffnet;
         sessionStorage.setItem('Nutzer', JSON.stringify(nutzer));
-        console.log({zuletztGeoeffnet})
     }
 
 
@@ -49,6 +47,7 @@ export default function Beitragpage() {
     return (
         <main>
             <div className="beitrag">
+            <div>{beitragId.text}</div>
                 <button className="download back_button"><a href="javascript:history.back()">Zurück</a></button>
                 <h1 className="title">{beitragId.title}</h1>
                 <div className="button_options">

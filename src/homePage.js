@@ -9,7 +9,7 @@ function Startpage() {
 
   return (
     <main>
-      <Top heading="Startseite"></Top>
+      <Top heading="EWS Wissen"></Top>
       <div className="content">
         {!editor && <Einarbeitungsleitfaden></Einarbeitungsleitfaden>}
         {editor && <KontrollBeitraege></KontrollBeitraege>}
@@ -27,7 +27,7 @@ function Einarbeitungsleitfaden() {
     <div className="einarbeitung_teaser">
       <div className="teaser">
         <h4>
-          <a href={`/leitfaden`}>Einarbeitungsleitfaden</a>
+          <a href={`/leitfaden`}>Leitfaden</a>
         </h4>
         <p>In diesem Leitfaden finden Sie alle relevanten Information und Abläufe für ihren Arbeitsalltag</p>
       </div>
@@ -49,7 +49,9 @@ function ZuletzGeoeffnet() {
 
   //Liste der drei zuletzt geöffneten Beiträge, nicht nach Öffnungszeitraum sortiert
   return (
-    <TeaserList beitraege={beitragList} heading="Zuletzt geöffnete Beiträge"></TeaserList>
+    <div>
+      {beitragList && beitragList.length > 0 && <TeaserList beitraege={beitragList} heading="Zuletzt geöffnete Beiträge"></TeaserList>}
+    </div>
   )
 }
 
@@ -76,7 +78,9 @@ function KontrollBeitraege() {
   );
 
   return (
-    <TeaserList beitraege={beitragList} heading="Zu prüfende Beiträge" kontrolldatum={true}></TeaserList>
+    <div>
+      {beitragList && beitragList.length > 0 && <TeaserList beitraege={beitragList} heading="Zu prüfende Beiträge" kontrolldatum={true}></TeaserList>}
+    </div>
   )
 
 }

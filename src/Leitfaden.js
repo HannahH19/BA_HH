@@ -1,5 +1,7 @@
+import InProgressPage from "./InProgress";
+
 export default function Leitfaden() {
     return (
-        <div></div>
+        <InProgressPage></InProgressPage>
     )
 }

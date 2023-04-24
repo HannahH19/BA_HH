@@ -14,7 +14,7 @@ import Leitfaden from './Leitfaden';
 import LeitfadenForm from './LeitfadenForm';
 
 function App() {
-  const [user, setUser] = useState(sessionStorage.getItem('Nutzer'));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('Nutzer')));
 
   //Nutzer mit Daten aus Datenbank holen
   //Wenn Daten richtig, dann wird Nutzer eingeloggt und kann Seite nutzen

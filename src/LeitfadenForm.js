@@ -1,5 +1,9 @@
+import InProgressPage from "./InProgress";
+
 export default function LeitfadenForm() {
     return (
-        <div></div>
+        <div>
+            <InProgressPage></InProgressPage>
+        </div>
     )
 }
