@@ -21,7 +21,7 @@ function TeaserList({ beitraege, heading, kontrolldatum = false }) {
   }
   return (
     <div className="container">
-      <h3>{heading}</h3>
+      <h2>{heading}</h2>
       <div className="beitrag_list">
         {beitraege?.map((beitrag) => (
           <Teaser key={beitrag.id} teaser={beitrag} kontrolldatum={kontrolldatum} />

@@ -1,3 +1,22 @@
+# Logindaten
+**Editor:**
+Nutzername: Testeditor
+Passwort: 123
+
+**Nutzer:** 
+Nutzername: Testnutzer
+Passwort: 234
+
+# Textquellen
+Alle im Projekt verwendeten Text stammen aus eigener Anfertigung. Sie dienen als Beispielinhalte.
+
+# Bildquellen
+Bild Fahrrad: 
+- https://unsplash.com/de/fotos/giFeTshEYYQ (Urheber: Jacek Dylag)
+
+Bild Unternehmen Farben:
+- eigene Anfertigung
+_____________________________________________________________________________________
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

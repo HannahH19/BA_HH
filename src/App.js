@@ -38,13 +38,23 @@ function App() {
 
   if (!user) {
     return (
-      <div className="login_overlay">
-        <div className="login_form">
-          <label>Name</label>
-          <input type="text" id="nutzername"></input>
-          <label>Passwort</label>
-          <input type="password" id="passwort"></input>
-          <button className="open" onClick={() => { checkNutzerData(document.querySelector('#nutzername').value, document.querySelector('#passwort').value) }}>Anmelden</button>
+      <div>
+        <div className="login_overlay">
+          <div className="login_form">
+            <label>Name</label>
+            <input type="text" id="nutzername"></input>
+            <label>Passwort</label>
+            <input type="password" id="passwort"></input>
+            <button className="open" onClick={() => { checkNutzerData(document.querySelector('#nutzername').value, document.querySelector('#passwort').value) }}>Anmelden</button>
+          </div>
+          <div className='anmeldedaten'>
+            <h2>Anmeldedaten Editor</h2>
+            <p>Nutzername: Testeditor</p>
+            <p>Passwort: 123</p>
+            <h2>Anmeldedaten Nutzer</h2>
+            <p>Nutzername: Testnutzer</p>
+            <p>Passwort: 234</p>
+          </div>
         </div>
       </div>
     )

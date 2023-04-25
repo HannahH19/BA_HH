@@ -57,7 +57,7 @@ export default function Suche() {
                     <div>
                         <p class="hinweis_form">Filtern Sie Ihre Suchergebnisse</p>
 
-                        <select style={{ float: 'right', width: '100px' }} className="sort" onChange={ev => setSortierung(ev.target.id)}>
+                        <select className="sort sortierung" onChange={ev => setSortierung(ev.target.id)}>
                             <option id="veroeffentlichungsdatum">Neueste</option>
                             <option id="title">Alphabetisch</option>
                         </select>
@@ -101,8 +101,10 @@ function Suchergebnisse({ beitragList, suchbegriff, sortierung }) {
         });
     } 
 
+    const listLength = beitragList.length;
+
     //Wenn Array leer, Keine Suchergebnisse
-    if (!beitragList || !Array.isArray(beitragList) || beitragList.length === 0) {
+    if (!beitragList || !Array.isArray(beitragList) || listLength === 0) {
         return (
             <div className="container">
                 <h2 className="ergebnis">Keine Suchergebnisse für "{suchbegriff}"</h2>
@@ -112,10 +114,7 @@ function Suchergebnisse({ beitragList, suchbegriff, sortierung }) {
         //Ausgabe der Suchergebnisse als Teaserlist mit Anzahl der Ergebnisse und Suchbegriff
         return (
             <div>
-                <div className="container">
-                    <h2 className="ergebnis">{beitragList.length} Ergebnisse  für "{suchbegriff}"</h2>
-                </div>
-                <TeaserList beitraege={beitragList} heading=""></TeaserList>
+                <TeaserList beitraege={beitragList} heading={listLength + ' Ergebnisse  für "' + suchbegriff + '"'}></TeaserList>
             </div>
         )
     }

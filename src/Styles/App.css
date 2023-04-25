@@ -31,6 +31,7 @@ h1 {
 
 h2 {
     font-size: 2rem;
+    line-height: normal;
 }
 
 h3 {
@@ -73,6 +74,8 @@ header {
 }
 
 header nav {
+    display: flex;
+    justify-content: center;
     padding: 0.2rem 433px;
 }
 
@@ -123,6 +126,11 @@ header a {
 
 
 /* Filterleiste Suche*/
+.sortierung {
+    width: 100px;
+    float: right;
+}
+
 .sort {
     padding: 0 10px;
     font-size: 0.9rem;
@@ -162,10 +170,6 @@ button.open {
     border: none;
 }
 
-.ergebnis {
-    padding: 20px 0px;
-}
-
 /* Content Startseite */
 .content {
     background: whitesmoke;
@@ -199,11 +203,9 @@ button.open {
     padding: 5px 10px;
     background: whitesmoke;
     box-shadow: 2px 2px 1px #0000000f;
-}
-
-.taglist a {
     color: rgb(119, 119, 119);
     text-decoration: none;
+    cursor: pointer;
 }
 
 .taglist a:hover {
@@ -236,6 +238,9 @@ h4 a {
 }
 
 /* Beitrag */
+.beitrag h1 {
+    line-height: normal;
+}
 
 .back_button {
     margin-bottom: 20px;
@@ -288,10 +293,11 @@ h1.title {
 
 /*Beitrag Form */
 
-.edit{
+.edit {
     display: grid;
     /* grid-template-columns: 2fr 1fr; */
 }
+
 #metadata {
     background: whitesmoke;
     /* padding: 20px 15%; */
@@ -546,7 +552,8 @@ textarea.pflicht {
     align-items: flex-start;
     position: absolute;
     top: 455px;
-    right: 250px
+    right: 250px;
+    z-index: 5;
 }
 
 .beitrag_list_editor h3,
@@ -654,11 +661,151 @@ th {
     background: linear-gradient(var(--gradient_blue1), var(--gradient_blue2));
 }
 
+.anmeldedaten{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px 30px;
+    color: white;
+}
+
 
 /*Anpassung kleinere Bildschirme*/
 
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 20px 10%;
+    }
+
+    /*Teaser Beitrag*/
+    .teaser h4 {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .taglist {
+        flex-wrap: wrap;
+    }
+
+    /* Top  */
+    .top {
+        margin-top: 80px;
+    }
+
+    .search {
+        display: flex;
+        width: fit-content;
+    }
+
+    .top p {
+        width: 65%;
+    }
+
+    /* Beitrag */
+    .beitrag {
+        width: 80%;
+        padding: 50px 10%;
+    }
+
+    /* Beitrag Editor */
+    .beitrag_list_editor {
+        width: 90%;
+        right: 0;
+        left: 0;
+    }
+
+    /* Suche */
+    .sortierung {
+        float: unset;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .container {
+        padding: 20px 10%;
+    }
+
+    /* Top  */
+    .top {
+        margin-top: 80px;
+    }
+
+    .search {
+        display: flex;
+        width: fit-content;
+    }
+
+    /* Beitrag */
+    .beitrag {
+        width: 80%;
+        padding: 50px 10%;
+    }
+
+    /* Beitrag Editor */
+    .beitrag_list_editor {
+        width: 90%;
+        right: 0;
+        left: 0;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1500px) {
+    .container {
+        padding: 20px 20%;
+    }
+
+    /* Navigation */
+    header nav {
+        padding: 1%;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Top */
+    .top {
+        margin-top: 55px;
+    }
+
+    /* Suche */
+    .search {
+        display: flex;
+        width: fit-content;
+    }
+
+    /* Beitrag */
+    .beitrag {
+        padding: 50px 25%;
+    }
+
+    /* Editor  */
+    .edit .beitrag,
+    .add .beitrag {
+        padding: 20px 25%;
+        width: 50%;
+    }
+}
+
+@media (min-width: 1501px) and (max-width: 1800px) {
+    /* Navigation */
+    header nav {
+        padding: 5px 1%;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Editor  */
+    .edit .beitrag,
+    .add .beitrag {
+        padding: 20px 30%;
+        width: 40%;
+    }
+}
+
 /* Mobile Navigation */
-@media screen and (max-width: 800px) {
+/* Quelle: Responsive hamburger menu - pure CSS #1, https://codepen.io/mutedblues/pen/MmPNPG (Aufgerufen: 24.04.2023) */
+@media screen and (max-width: 900px) {
     nav {
         display: none;
     }
@@ -728,6 +875,7 @@ th {
 
     .menu-button-container {
         display: flex;
+        cursor: pointer;
     }
 
     .menu {
@@ -772,33 +920,4 @@ th {
         border-bottom: 1px solid #000000;
     }
 
-}
-
-@media screen and (max-width: 1700px) {
-
-    .container,
-    .beitrag {
-        padding: 20px 20%
-    }
-
-    header nav {
-        padding: 0.2rem 20%;
-    }
-}
-
-@media screen and (max-width: 850px) {
-
-    .container,
-    .beitrag {
-        padding: 20px 10%
-    }
-
-    header nav {
-        padding: 0.2rem 10%;
-    }
-}
-
-
-option[selected=true]{
-    background: red !important;
 }

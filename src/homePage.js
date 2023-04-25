@@ -2,10 +2,12 @@ import Top from "./Top";
 import TeaserList from "./Teaser";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
+import { useState } from "react";
 
 function Startpage() {
   //Rolle des Nutzers
-  const editor = JSON.parse(sessionStorage.getItem('Nutzer')).editor;
+  const nutzer = JSON.parse(sessionStorage.getItem('Nutzer'));
+  const editor = nutzer.editor;
 
   return (
     <main>
@@ -36,16 +38,22 @@ function Einarbeitungsleitfaden() {
 }
 
 function ZuletzGeoeffnet() {
-  const zuletztGeloeffnetList = JSON.parse(sessionStorage.getItem('Nutzer')).letzte_beitraege;
-  const beitragList = useLiveQuery(
-    async () => {
+  const [beitragList, setBeitragList] = useState([]);
+  const zuletztGeoeffnetList = JSON.parse(sessionStorage.getItem('Nutzer')).letzte_beitraege;
+
+  async function getBeitragList(zuletztGeoeffnetList) {
+    try {
       const beitrag = await db.beitrag
         .where('id')
-        .anyOf(zuletztGeloeffnetList)
+        .anyOf(zuletztGeoeffnetList)
         .toArray();
-      return beitrag;
+      setBeitragList(beitrag);
+    } catch {
+
     }
-  );
+  }
+
+  getBeitragList(zuletztGeoeffnetList);
 
   //Liste der drei zuletzt geöffneten Beiträge, nicht nach Öffnungszeitraum sortiert
   return (
@@ -56,6 +64,7 @@ function ZuletzGeoeffnet() {
 }
 
 function KontrollBeitraege() {
+  const [beitragList, setBeitragList] = useState([]);
   const nameNutzer = JSON.parse(sessionStorage.getItem('Nutzer')).name;
   const datum = new Date();
   const tag = String(datum.getDate()).padStart(2, '0');
@@ -64,19 +73,23 @@ function KontrollBeitraege() {
   //Datum von Heute für Prüfunf, welcher Beitrag sein Kontrolldatum überschritten hat
   const datumHeute = String(jahr) + '-' + String(monat) + '-' + String(tag);
 
-
   //Alle Beiträge mit Datum kleiner gleich Autor aus Datenbank holen und nach richtigem Autor filtern
-  const beitragList = useLiveQuery(
-    async () => {
+  async function getBeitragList(datumHeute, nameNutzer) {
+    try {
       const beitrag = await db.beitrag
         .where('kontrolldatum')
         .belowOrEqual(datumHeute)
         .and(beitrag => beitrag.autor === nameNutzer)
         .toArray();
-      return beitrag;
-    }
-  );
+      setBeitragList(beitrag);
+    } catch {
 
+    }
+  }
+
+  getBeitragList(datumHeute, nameNutzer);
+
+  console.log({beitragList})
   return (
     <div>
       {beitragList && beitragList.length > 0 && <TeaserList beitraege={beitragList} heading="Zu prüfende Beiträge" kontrolldatum={true}></TeaserList>}

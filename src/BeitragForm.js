@@ -266,7 +266,6 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                         data={text}
                         config={{
                             beitrag_list: {
-
                                 beitragRenderer: (id, domElement) => {
                                     const root = createRoot(domElement);
                                     const beitrag = beitragListView.current?.find(beitrag => beitrag.id === id)
@@ -430,7 +429,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
                     <button
                         className="open"
                         onClick={addBeitrag}>
-                        Beitrag neuerstellen
+                        Beitrag erstellen
                     </button>
                 </div>
             </div>
@@ -495,18 +494,18 @@ function getTitelLinkedBeitraege(beitragListAll, linkedBeitraege) {
     })
 }
 
-//Prüfen, welche Beiträge in diesen eingbeunden werden können
+//Prüfen, welche Beiträge in diesen eingebunden werden können
 //Beiträge die diesen einbinden können nicht eingebunden werden
 //Das gilt auch für weitere Abstufungen 
 function checkEinbindbareBeitraege(beitragList, beitragId, linkedBeitraege) {
-    if (!beitragList || !linkedBeitraege) { return }
+    if (!beitragList || !linkedBeitraege ) { return }
     let filteredList = [];
     let includesBeitragList = [];
     //Geöffnenten Beitrag aus Liste filtern 
     beitragList = beitragList?.filter(element => element.id !== beitragId);
     //Beiträge die den geöffneten Einbinden beinhalten und bereits eingebundene Beiträge aus Liste filtern
     beitragList.forEach(beitrag => {
-        if (beitrag.linkedBeitraege.includes(beitragId) || linkedBeitraege.includes(beitrag.id)) {
+        if (beitrag.linkedBeitraege?.includes(beitragId) || linkedBeitraege?.includes(beitrag.id)) {
             includesBeitragList.push(beitrag.id);
         } else {
             filteredList.push(beitrag);
@@ -515,7 +514,7 @@ function checkEinbindbareBeitraege(beitragList, beitragId, linkedBeitraege) {
 
     //Beiträge die Beiträge einbinden, die den geöffneten Einbinden aus Liste filtern
     filteredList.forEach((beitrag, index) => {
-        beitrag?.linkedBeitraege.forEach(element => {
+        beitrag?.linkedBeitraege?.forEach(element => {
             if (includesBeitragList.includes(element)) {
                 includesBeitragList.push(beitrag.id);
                 filteredList.splice(index, 1);

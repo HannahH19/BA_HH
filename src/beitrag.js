@@ -47,7 +47,6 @@ export default function Beitragpage() {
     return (
         <main>
             <div className="beitrag">
-            <div>{beitragId.text}</div>
                 <button className="download back_button"><a href="javascript:history.back()">Zurück</a></button>
                 <h1 className="title">{beitragId.title}</h1>
                 <div className="button_options">
@@ -292,9 +291,16 @@ function TableFormat({ text }) {
 }
 
 
-//Text des eingebundenen Beitrags wird bei jedem öffnen neu aus DB geholt und erstellt, um Synchronität zu gewährleisen
+//Text des eingebundenen Beitrags wird bei jedem öffnen neu aus DB geholt und erstellt
 function EingebundenerBeitrag({ id }) {
-    const beitrag = GetBeitrag(id);
+    const beitrag = useLiveQuery(
+        async () => {
+            const beitrag = await db.beitrag
+                .where({ id: parseInt(id) })
+                .toArray();
+            return beitrag;
+        }
+    );
     if (!beitrag) { return }
     const beitragId = beitrag[0];
     const titel = preFormatText('<h2>' + beitragId.title + '</h2>');
@@ -310,16 +316,4 @@ function EingebundenerBeitrag({ id }) {
         </div>
     )
 
-}
-
-export function GetBeitrag(id) {
-    const beitrag = useLiveQuery(
-        async () => {
-            const beitrag = await db.beitrag
-                .where({ id: parseInt(id) })
-                .toArray();
-            return beitrag;
-        }
-    );
-    return beitrag;
 }

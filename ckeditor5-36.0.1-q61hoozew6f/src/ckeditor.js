@@ -63,6 +63,8 @@ Editor.builtinPlugins = [
 Editor.defaultConfig = {
 	toolbar: {
 		items: [
+			'beitragAdd',
+			'|',
 			'heading',
 			'|',
 			'underline',
@@ -80,9 +82,7 @@ Editor.defaultConfig = {
 			'insertTable',
 			'mediaEmbed',
 			'undo',
-			'redo',
-			'|',
-			'beitragAdd'
+			'redo'
 		]
 	},
 	language: 'de',
