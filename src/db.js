@@ -8,7 +8,7 @@ db.version(3).stores({
 
 db.open();
 
-db.beitrag.clear();
+//db.beitrag.clear();
 
 //Für jede Abteilung wird ein Beispielartikel erstellt
 
