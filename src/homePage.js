@@ -1,12 +1,12 @@
 import Top from "./Top";
 import TeaserList from "./Teaser";
-import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
 import { useState } from "react";
 
+//Startseite 
 function Startpage() {
-  //Rolle des Nutzers
   const nutzer = JSON.parse(sessionStorage.getItem('Nutzer'));
+  //Rolle des Nutzers
   const editor = nutzer.editor;
 
   return (
@@ -24,6 +24,7 @@ function Startpage() {
 
 export default Startpage;
 
+//Leitfaden Teaseransicht 
 function Einarbeitungsleitfaden() {
   return (
     <div className="einarbeitung_teaser">
@@ -63,6 +64,7 @@ function ZuletzGeoeffnet() {
   )
 }
 
+// Liste aller zu kontrollierenden Beiträge ausgeben 
 function KontrollBeitraege() {
   const [beitragList, setBeitragList] = useState([]);
   const nameNutzer = JSON.parse(sessionStorage.getItem('Nutzer')).name;
@@ -73,7 +75,7 @@ function KontrollBeitraege() {
   //Datum von Heute für Prüfunf, welcher Beitrag sein Kontrolldatum überschritten hat
   const datumHeute = String(jahr) + '-' + String(monat) + '-' + String(tag);
 
-  //Alle Beiträge mit Datum kleiner gleich Autor aus Datenbank holen und nach richtigem Autor filtern
+  //Alle Beiträge mit abgelaufenem Kontrolldatum aus Datenbank holen und nach richtigem Autor filtern
   async function getBeitragList(datumHeute, nameNutzer) {
     try {
       const beitrag = await db.beitrag
@@ -89,7 +91,6 @@ function KontrollBeitraege() {
 
   getBeitragList(datumHeute, nameNutzer);
 
-  console.log({beitragList})
   return (
     <div>
       {beitragList && beitragList.length > 0 && <TeaserList beitraege={beitragList} heading="Zu prüfende Beiträge" kontrolldatum={true}></TeaserList>}

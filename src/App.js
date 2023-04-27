@@ -36,6 +36,7 @@ function App() {
     }
   }
 
+  //Wenn kein User in der Session hinterlegt ist, dann Login Overlay anzeigen
   if (!user) {
     return (
       <div>
@@ -47,6 +48,7 @@ function App() {
             <input type="password" id="passwort"></input>
             <button className="open" onClick={() => { checkNutzerData(document.querySelector('#nutzername').value, document.querySelector('#passwort').value) }}>Anmelden</button>
           </div>
+          {/* Anmeldedaten für Prototypen */}
           <div className='anmeldedaten'>
             <h2>Anmeldedaten Editor</h2>
             <p>Nutzername: Testeditor</p>

@@ -4,6 +4,7 @@ import Top from "./Top";
 
 /*Übersicht aller Beiträge*/
 export default function AlleBeitraege() {
+    // Liste aller Beiträge mit Abteilung Abteilungsübergreifen
     const listAbteilungsuebergreifend = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -13,6 +14,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung Einkauf & Reklamation 
     const listEinkauf = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -22,6 +24,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung EDV & IT
     const listEdv = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -31,6 +34,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung Kontaktvermtittlung
     const listKontaktvermittlung = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -40,6 +44,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung Marketing
     const listMarketing = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -49,6 +54,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung Rechnungswesen
     const listRechnungswesen = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -58,6 +64,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung Versand
     const listVersand = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -67,6 +74,7 @@ export default function AlleBeitraege() {
         }
     );
 
+    // Liste aller Beiträge mit Abteilung Vertrieb
     const listVertrieb = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -76,25 +84,24 @@ export default function AlleBeitraege() {
         }
     );
 
-    // console.log({beitraege})
     return (
         <div>
             <Top heading="Alle Beiträge"></Top>
             <div className="container">
-               <ListAbteilung abteilung='Abteilungsübergreifend' beitragList={listAbteilungsuebergreifend}></ListAbteilung>
-               <ListAbteilung abteilung='EDV & IT' beitragList={listEdv}></ListAbteilung>
-               <ListAbteilung abteilung='Einkauf & Reklamation' beitragList={listEinkauf}></ListAbteilung>
-               <ListAbteilung abteilung='Kontaktvermittlung' beitragList={listKontaktvermittlung}></ListAbteilung>
-               <ListAbteilung abteilung='Marketing' beitragList={listMarketing}></ListAbteilung>
-               <ListAbteilung abteilung='Rechungswesen' beitragList={listRechnungswesen}></ListAbteilung>
-               <ListAbteilung abteilung='Versand' beitragList={listVersand}></ListAbteilung>
-               <ListAbteilung abteilung='Vertrieb' beitragList={listVertrieb}></ListAbteilung>
+                <ListAbteilung abteilung='Abteilungsübergreifend' beitragList={listAbteilungsuebergreifend}></ListAbteilung>
+                <ListAbteilung abteilung='EDV & IT' beitragList={listEdv}></ListAbteilung>
+                <ListAbteilung abteilung='Einkauf & Reklamation' beitragList={listEinkauf}></ListAbteilung>
+                <ListAbteilung abteilung='Kontaktvermittlung' beitragList={listKontaktvermittlung}></ListAbteilung>
+                <ListAbteilung abteilung='Marketing' beitragList={listMarketing}></ListAbteilung>
+                <ListAbteilung abteilung='Rechungswesen' beitragList={listRechnungswesen}></ListAbteilung>
+                <ListAbteilung abteilung='Versand' beitragList={listVersand}></ListAbteilung>
+                <ListAbteilung abteilung='Vertrieb' beitragList={listVertrieb}></ListAbteilung>
             </div>
         </div>
     )
 }
 
-
+// Gibt Abteilung als Liste mit Titel der zugehörigen Beiträge aus 
 function ListAbteilung({ abteilung, beitragList }) {
     return (
         <div>

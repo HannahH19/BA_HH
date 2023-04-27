@@ -1,6 +1,7 @@
 import React from 'react';
 import BeitragPreview from './BeitragPreview';
 
+// Liste von Beiträgen ausgeben, für Beitrag hinzufügen Liste
 export default class BeitragList extends React.Component {
     render() {
         return <div className="beitrag_list_editor" style={{ display: 'none' }}>

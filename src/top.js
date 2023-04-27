@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+//Top Element mit Suche
+//Suchbutton leitet zur Suchseite weiter
 function Top({ heading }) {
     const navigate = useNavigate();
     return (
@@ -22,6 +24,7 @@ function Top({ heading }) {
 
 export default Top;
 
+//Prüfen, ob mindestens 4 Zeichen eingegeben wurden
 export function checkInput(text) {
     if (text && text.length >= 3) {
         document.querySelector('.search_button')?.classList.add('open');

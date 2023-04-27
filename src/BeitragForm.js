@@ -41,6 +41,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     }
 
     //Beitrag einbinden Fenster Position
+    //Beitrag in Datenbank updaten
     async function addBeitrag() {
         if (!title || !text || !kurzbeschreibung || !tags || !abteilung || !sichtbarkeit || !autor || !kontrolldatum || !veroeffentlichungsdatum) {
             toast.info('Bitte füllen Sie alle Felder aus');
@@ -67,6 +68,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         }
     }
 
+    // Beitrag in Datenbank updaten
     async function updateBeitrag(
         id,
         title,
@@ -122,6 +124,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         }
     }
 
+    // Prüfung ob Titel bereits in Datenbank vorhanden ist 
     async function checkTitel(value) {
         try {
             const id = await db.beitrag.where({ title: value }).toArray()
@@ -137,15 +140,18 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         }
     }
 
+    // Tag zur Tagliste hinzufügen
     function addTag(tagList, tag) {
         let tag_correct = true;
         let tag_array = [];
+        //Wenn kein Tag eingeben Nutzer darauf hinweisen
         if (!tag) {
             toast.warn('Bitte geben Sie ein Schlagwort ein');
             return tagList
         }
         if (tagList) {
             tag_array = tagList;
+            //Prüfen, ob Tag bereits in Tagliste hinterlegt ist
             tagList?.forEach(element => {
                 if (element == tag) {
                     toast.warn('Das Schlagwort ' + tag + ' existiert bereits, bitte geben Sie ein anderes Wort ein');
@@ -176,6 +182,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
         return idList;
     }
 
+    //Tag aus Tagliste entfernen
     function deleteTag(tagList, tagIndex) {
         tagList.splice(tagIndex, 1);
         document.getElementById('tag_' + tagIndex).style.display = 'none';
@@ -242,6 +249,7 @@ export default function Beitrag_form({ beitrag = {}, action }) {
     return (
         <div className={action}>
             <div className="beitrag">
+                {/* Zur vorherigen Seite zurücknavigieren */}
                 <button className="download back_button" onClick={() => navigate(-1)}>Zurück</button>
                 <h2>Beitrag</h2>
                 <div id="title">
@@ -460,7 +468,7 @@ function check_length(max_length, target) {
     }
 }
 
-//Checken ob Datumn nicht weiter als ein Jahr und vor Heute ist
+//Checken ob Datum nicht weiter als ein Jahr und vor Heute ist
 function check_controll_date() {
     const datum = new Date();
     const tag = String(datum.getDate()).padStart(2, '0');
@@ -485,6 +493,7 @@ function getTitelLinkedBeitraege(beitragListAll, linkedBeitraege) {
         if (!element) { return }
         const result = beitragListAll.filter(beitrag => beitrag.id === id);
         if (!result) {
+            //wenn beitrag nicht mehr in db vorhanden 
             element.remove();
             toast.warn('Der Beitrag ' + id + ' existiert nicht mehr und kann nicht mehr eingebunden werden');
         } else {
@@ -498,7 +507,7 @@ function getTitelLinkedBeitraege(beitragListAll, linkedBeitraege) {
 //Beiträge die diesen einbinden können nicht eingebunden werden
 //Das gilt auch für weitere Abstufungen 
 function checkEinbindbareBeitraege(beitragList, beitragId, linkedBeitraege) {
-    if (!beitragList || !linkedBeitraege ) { return }
+    if (!beitragList || !linkedBeitraege) { return }
     let filteredList = [];
     let includesBeitragList = [];
     //Geöffnenten Beitrag aus Liste filtern 

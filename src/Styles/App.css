@@ -60,7 +60,7 @@ button:hover {
 }
 
 img {
-    border: 1px solid;
+    border: 1px solid #b9b9b9;
 }
 
 /* Navigation Desktop */
@@ -89,7 +89,6 @@ header a {
 .top-nav {
     display: none;
 }
-
 
 /* Top Punkt */
 .top {

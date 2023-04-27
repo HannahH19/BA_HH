@@ -5,12 +5,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Beitragpage() {
     const { id } = useParams();
+    // Nutzer aus Session holen
     const nutzer = JSON.parse(sessionStorage.getItem('Nutzer'));
 
     if (!id) {
         alert('Keine Beitrag gefunden');
     }
 
+    // Beitrag mit ID aus Datenbank holen
     const beitrag = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -41,8 +43,9 @@ export default function Beitragpage() {
         sessionStorage.setItem('Nutzer', JSON.stringify(nutzer));
     }
 
-
+    //Beitrag Text für Ausgabe formatieren
     const text = preFormatText(beitragId.text);
+    //formatierten Text in Array umwandeln
     const text_formatted = text.split('|');
     return (
         <main>
@@ -255,6 +258,7 @@ function FormatText({ text }) {
     }
 }
 
+//Formatierung der einzelnen Satzelemente
 function StilFormat({ text }) {
     //Jeder Textpart wird auf Formatierungen wie kursiv, dick, unterstrichen oder Link geprüft
     //Separat von anderen Formatierungen, da diese Formatierung häufig in anderer verschachtelt ist 
@@ -264,12 +268,16 @@ function StilFormat({ text }) {
     text = text.replaceAll('/a>', '');
 
     if (text.includes('strong>')) {
+        //bold
         return (<strong>{text.replace('strong>', '')}</strong>)
     } else if (text.includes('i>')) {
+        //kursiv
         return (<i>{text.replace('i>', '')}</i>)
     } else if (text.includes('u>')) {
+        //unterstrichen
         return (<u>{text.replace('u>', '')}</u>)
     } else if (text.includes('a href')) {
+        //Link
         const text_link = text.split('">');
         return (<a href={text_link[0].replace('a href="', '')}>{text_link[1]}</a>)
     } else {
@@ -280,8 +288,10 @@ function StilFormat({ text }) {
 /*Gibt Tabellenspalte oder Tabellenheaderspalte zurück*/
 function TableFormat({ text }) {
     if (text.includes('header')) {
+        //Kopfzeile
         return (<th>{text.replace('header', '')}</th>)
     } else {
+        //Tabellenspalte
         return (<td>
             {text.split('<').map((element) => (
                 <StilFormat text={element}></StilFormat>
@@ -293,6 +303,7 @@ function TableFormat({ text }) {
 
 //Text des eingebundenen Beitrags wird bei jedem öffnen neu aus DB geholt und erstellt
 function EingebundenerBeitrag({ id }) {
+    // Beitrag mit id aus Datenbank holen
     const beitrag = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
@@ -302,8 +313,10 @@ function EingebundenerBeitrag({ id }) {
         }
     );
     if (!beitrag) { return }
+
     const beitragId = beitrag[0];
     const titel = preFormatText('<h2>' + beitragId.title + '</h2>');
+    // Text des eingebundenen Beitrags formatieren
     const text = preFormatText(beitragId.text);
     const text_formatted = text.split('|');
 

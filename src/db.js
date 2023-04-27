@@ -37,7 +37,7 @@ db.beitrag.add({
     sichtbarkeit: ['Abteilungsübergreifend'],
     abteilung: 'Abteilungsübergreifend',
     autor: 'Testeditor',
-    kontrolldatum: '2023-04-31',
+    kontrolldatum: '2023-04-30',
     veroeffentlichungsdatum: '2023-04-21',
     linkedBeitraege: []
 });

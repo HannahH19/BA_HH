@@ -1,5 +1,6 @@
 import React from 'react';
 
+//Vorschau ansicht für Beitrag Liste Editor
 export default class BeitragPreview extends React.Component {
     render() {
         return <div className="beitrag_preview" teaser={this.props} key={this.props.id}>

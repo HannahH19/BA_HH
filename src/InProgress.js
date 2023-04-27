@@ -1,3 +1,4 @@
+//Seite für Prototyp, zur Kennzeichnung noch nicht verfügbarer Inhalte
 export default function InProgressPage() {
     return (
         <main>

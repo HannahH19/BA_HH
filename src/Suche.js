@@ -5,6 +5,7 @@ import TeaserList from "./Teaser";
 import { useState } from "react";
 import { checkInput } from "./Top";
 
+//Suchseite
 export default function Suche() {
     const [suchbegriff, setSuchbegriff] = useState(sessionStorage.getItem('suchbegriff'));
     const [ergebnisse, setErgebnisse] = useState([]);
@@ -15,6 +16,7 @@ export default function Suche() {
         getBeitragSuchergebnisse(suchbegriff);
     }
 
+    //Datenbank nach suchbegriff filtern
     async function getBeitragSuchergebnisse(suchbegriff) {
         if (!suchbegriff) { return [] }
 
@@ -88,6 +90,7 @@ function Suchergebnisse({ beitragList, suchbegriff, sortierung }) {
     //Sortierung standardmäßig alphabetisch
     //Weitere Sortierungen bisher ohne Funktionalität
     if (sortierung === 'title') {
+        //Titel alphabetisch sortieren
         beitragList = beitragList.sort((a, b) => {
             let title_a = a.title.toLowerCase();
             let title_b = b.title.toLowerCase();

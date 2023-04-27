@@ -1,11 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
 import { useParams } from "react-router-dom";
-import Editor from 'ckeditor5-custom-build/build/ckeditor';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import abteilunglist from "./Abteilung";
-import { useState } from "react";
 import Beitrag_form from "./BeitragForm";
 
 export default function Beitragpage_edit() {
@@ -16,10 +11,11 @@ export default function Beitragpage_edit() {
         alert('Keine Beitrag gefunden');
     }
 
+    //Beitrag zum editieren aus Datenbank holen 
     const beitrag = useLiveQuery(
         async () => {
             const beitrag = await db.beitrag
-                .where({id: parseInt(id)})
+                .where({ id: parseInt(id) })
                 .toArray();
             return beitrag;
         }
@@ -34,6 +30,7 @@ export default function Beitragpage_edit() {
         return
     }
 
+    //Beitrag Form für das Editieren von Beitrag ausgeben
     return (
         <main>
             <Beitrag_form beitrag={beitrag_id} action="edit"></Beitrag_form>

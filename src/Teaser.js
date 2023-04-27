@@ -1,3 +1,4 @@
+// Teaseransicht von Beiträgen
 function Teaser({ teaser, kontrolldatum = false }) {
   return (
     <div className="teaser" teaser={teaser}>
@@ -15,6 +16,7 @@ function Teaser({ teaser, kontrolldatum = false }) {
   );
 }
 
+//Liste von Beiträgen als Teaseransicht 
 function TeaserList({ beitraege, heading, kontrolldatum = false }) {
   if (!beitraege) {
     return
